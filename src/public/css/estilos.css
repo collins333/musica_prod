@@ -1,0 +1,99 @@
+body, html {
+  background-color:darkgoldenrod;
+}
+tbody {
+  background-color: whitesmoke;
+}
+td strong, td strong a, td span.titulo, td.titulo {
+  font-size: 1.2rem;
+  color: brown;
+}
+td span.titulo, th span.discos {
+  margin-left: 1rem;
+}
+td span.nombre-interprete {
+  color: black;
+  font-size: 1.2rem;
+}
+td a, td.duracion {
+  color: black;
+  font-size: 1.1rem;
+}
+td a:hover {
+  text-decoration: none;
+  color: red;
+}
+#indice {
+  background-image: url("/img/fondo.jpg");
+  /* background-repeat: no-repeat;
+  background-position: center; */
+  background-size: cover;
+}
+.indice {
+  background-color: transparent;
+  border-color: transparent;
+}
+.indiceTxt {
+  font-size: 2rem;
+  color: black;
+  font-weight: bolder;
+}
+.cabecera {
+  background-color: brown;
+  color: white;
+  text-align: center;
+  font-size: 1.1rem;
+}
+.centrar {
+  margin: auto;
+}
+.centrar-texto {
+  text-align: center;
+  font-size: 1.1rem;
+}
+.table-bordered td, .table-bordered th {
+  border: 1px solid transparent;
+}
+.table td, .table th {
+  vertical-align: middle;
+}
+.offset-md-3 {
+  margin-left: 5%;
+}
+.texto-blanco {
+  color: white;
+  background-color: black;
+}
+.discos-coleccion, .canciones-disco {
+  font-size: 1.5rem;
+  text-align: left;
+}
+.nombre-cantante, .nombre-disco {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: brown;
+  font-family:Comic Sans ms;
+}
+.ver {
+  margin-bottom: 0;
+}
+.btn-volver {
+  color: white;
+  background-color: darkcyan;
+  border-color: darkcyan;
+}
+.btn-volver:hover {
+  color: white;
+  background-color: darkblue;
+  border-color: darkblue;
+}
+.transparente {
+  background-color: darkgoldenrod;
+}
+.redondo {
+  border-radius: 50%;
+}
+.grande {
+  font-size: 1.2rem;
+  font-weight: bold;
+}

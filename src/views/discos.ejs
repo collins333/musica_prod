@@ -1,0 +1,95 @@
+<% include partials/_header %>
+<div class="container">
+  <div class="col-md-8 centrar">
+    <table class="table table-bordered table-hover">
+      <thead class="cabecera">
+        <tr>
+          <th>N°</th>
+          <th>Título</th>
+          <th>Intérprete</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for(var i=0; i < discos.length; i++) { %>
+          <tr>
+            <td><%= i + 1 %></td>
+            <td>
+              <strong>
+                <a href="/verDisco/<%= discos[i]._id %>">
+                  <%= discos[i].titulo %>
+                </a>
+              </strong>
+            </td>
+            <td>
+              <a href="/verCantante/<%= discos[i].interprete._id %>/">
+                <%= discos[i].interprete.nombre %></td>
+              </a>
+            <td>
+              <a href="/verDisco/<%= discos[i]._id %>">
+                <img src="<%= discos[i].caratula %>" alt="" width="50px" height="50px">
+              </a>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <div class="row">
+      <% if(paginas) { %>
+        <nav class="mx-auto">
+          <ul class="pagination">
+            <!--primera página-->
+            <% if(current == 1) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">Primera página</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="/discos/1" class="page-link">Primera página</a>
+              </li>
+            <% } %>
+            <!--Páginas intermedias-->
+            <% var i = Number(current) > 5 ? Number(current) - 4 : 1 %>	
+            <% if(i !== 1) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">...</a>
+              </li>
+            <% } %>
+            <% for(; i<=Number(current)+4 && i<=paginas; i+=1) { %>
+              <% if(i == current) { %>
+                <li class="page-item active">
+                  <a href="<%= i %>" class="page-link"><%= i %></a>
+                </li>
+              <% } else { %>
+                <li class="page-item">
+                  <a href="/discos/<%= i %>" class="page-link"><%= i %></a>
+                </li>
+              <% } %>
+              <% if(i == Number(current) + 4 && i < paginas) { %>
+                <li class="page-item disabled">
+                  <a href="#" class="page-link">...</a>
+                </li>
+              <% } %>
+            <%} %>
+            <!--última página-->
+            <% if(current == paginas) { %>
+              <li class="page-item disabled">
+                <a href="#" class="page-link">Ultima página</a>
+              </li>
+            <% } else { %>
+              <li class="page-item">
+                <a href="/discos/<%= paginas %>" class="page-link">Ultima página</a>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+      <% } %>
+    </div>
+  </div>
+  <div class="card-body centrar-texto">
+    <a href="/" class="btn btn-volver">
+      Volver
+    </a>
+  </div>
+</div>
+<% include partials/_footer %>

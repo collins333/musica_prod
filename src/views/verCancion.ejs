@@ -1,0 +1,61 @@
+<% include partials/_header %>
+<!-- <%= cancion %> -->
+<div class="container">
+  <div class="col-md-8 centrar">
+    <table class="table table-bordered table-hover">
+      <thead class="cabecera">
+        <th>Intérprete</th>
+        <th>Título</th>
+        <th>Duración</th>
+      </thead>
+      <tr>
+        <td><%= cancion.num_cancion %></td>
+        <td class="titulo">
+          <a href="<%= cancion.enlace %>" target="_blank">
+            <%= cancion.tit_cancion %>
+          </a>
+        </td>
+        <td class="centrar-texto"><%= cancion.dur_cancion %></td>
+      </tr>      
+      <tr>
+        <td><strong>Album:</strong></td>
+        <td colspan="2">
+          <a href="/verDisco/<%= cancion.del_disco._id %>">
+            <%= cancion.del_disco.titulo %>
+          </a>
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+          <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <button class="btn btn-danger delete" type="submit">Eliminar</button> 
+          </form>
+        </td>
+        <td>
+          <a href="/editCancion/<%= cancion._id %>" class="btn btn-success">
+            Editar
+          </a>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="card-body centrar-texto">
+    <a href="/canciones/canciones" class="btn btn-volver">
+      Volver
+    </a>
+  </div>
+</div>
+<script>
+  let botones = document.getElementsByClassName('delete')
+  for(let i=0; i<botones.length; i+=1) {
+    botones[i].addEventListener('click', (e) => {
+      let respuesta = confirm('Estás seguro de querer eliminar este disco?')
+      if(!respuesta){
+        e.preventDefault()
+      }
+    })
+  }
+</script>
+<% include partials/_footer %>

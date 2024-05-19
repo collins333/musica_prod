@@ -1,0 +1,49 @@
+<% include partials/_header %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-7 centrar">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr class="cabecera">
+            <th>N°</th>
+            <th>Cantante / Disco</th>
+            <th>Carátula</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(var i=0; i < interpretes.length; i++) { %>
+            <tr>
+              <td><%= i + 1 %></td>
+              <td><strong>
+                <a href="/verCantante/<%= interpretes[i]._id %>">
+                  <%= interpretes[i].nombre %></strong>
+                </a>
+              </td>
+              <td class="centrar-texto">
+                <a href="/verCantante/<%= interpretes[i]._id %>">
+                  <img src="<%= interpretes[i].caratula %>" alt="" width="50px" height="50px">
+                </a>
+              </td>
+            </tr>
+          <% } %>
+          <% for(var j=0; j < discos.length; j++) { %>
+            <tr>
+              <td><%= j + 1 %></td>
+              <td><strong>
+                <a href="/verDisco/<%= discos[j]._id %>" class="text-primary">
+                  <%= discos[j].titulo %></strong>
+                </a>
+              </td>
+              <td class="centrar-texto">
+                <a href="/verDisco/<%= discos[j]._id %>">
+                  <img src="<%= discos[j].caratula %>" alt="" width="50px" height="50px">
+                </a>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<% include partials/_footer %>

@@ -1,0 +1,80 @@
+<% include partials/_header %>
+<div class="container">
+  <div class="col-md-8 centrar">
+    <table class="table table-bordered table-hover ver">
+      <tbody>
+        <tr>
+          <td>
+            <img src="<%= interprete.caratula %>" alt="" width="300px" height="300px">
+          </td>
+          <td class="nombre-cantante">
+            <%= interprete.nombre %>
+          </td>
+          <td class="grande"><%= interprete.nacionalidad %></td>
+        </tr>
+        <!-- <tr>
+          <td>
+            <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <button class="btn btn-danger delete" type="submit">Eliminar</button> 
+            </form>
+          </td>
+          <td>
+            <a href="/editCantante/<%= interprete._id %>" class="btn btn-success">
+              Editar
+            </a>
+          </td>
+        </tr> -->
+      </tbody>
+    </table>
+    <div class="card-body texto-blanco"><%= interprete.info %></div>
+  </div>
+  <div class="col-md-8 centrar">
+    <!-- <h3>Discos en la colección</h3> -->
+    <table class="table table-bordered table-hover ver">
+      <thead class="cabecera">
+        <tr class="discos-coleccion">
+          <th>
+            <span class="discos">
+              Discos en la colección
+            </span>
+          </th>
+          <th></th>
+        </tr>
+      </thead>
+      <% for(var i=0; i < interprete.discos.length; i++){ %>
+        <tr>
+          <td>
+            <strong>
+              <span class="titulo">
+                <%= interprete.discos[i].titulo %>
+              </span>
+            </strong>
+          </td>
+          <td class="centrar-texto">
+            <a href="/verDisco/<%= interprete.discos[i]._id %>">
+              <img src="<%= interprete.discos[i].caratula %>" alt="" width="50px" height="50px">
+            </a>
+          </td>
+        </tr>
+      <% } %>
+    </table>
+  </div>
+  <div class="card-body centrar-texto">
+    <a href="/cantantes/cantantes" class="btn btn-volver">
+      Volver
+    </a>
+  </div>
+</div>
+<script>
+  let botones = document.getElementsByClassName('delete')
+  for(let i=0; i<botones.length; i+=1) {
+    botones[i].addEventListener('click', (e) => {
+      let respuesta = confirm('Estás seguro de querer eliminar este cantante?')
+      if(!respuesta){
+        e.preventDefault()
+      }
+    })
+  }
+</script>
+<% include partials/_footer %>

@@ -1,0 +1,109 @@
+<% include partials/_header %>
+<!-- <%= disco.titulo %> -->
+<div class="container">
+  <div class="col-md-8 centrar">
+    <table class="table table-bordered table-hover ver">
+      <thead class="cabecera">
+        <th class="transparente"></th>
+        <th>Título del disco</th>
+        <th>Intérprete</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="2">
+            <img src="<%= disco.caratula %>" alt="" width="300px" height="300px">
+          </td>
+          <td class="nombre-disco centrar-texto"><%= disco.titulo %></td>
+          <td>
+            <a class="grande" href="/verCantante/<%= disco.interprete._id %>">
+              <%= disco.interprete.nombre %>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td>Año publicación: <%= disco.anyo %></td>
+          <td>
+            <a href="/verCantante/<%= disco.interprete._id %>">
+              <img class="redondo" src="<%= disco.interprete.caratula %>" alt="" width="100px" height="100px"></td>
+            </a>
+        </tr>
+        <!-- <tr>
+          <td>
+            <form action="/deleteDisco/<%= disco._id %>?_method=DELETE" method="POST">
+              <input type="hidden" name="_method" value="DELETE">
+              <button class="btn btn-danger delete" type="submit">Eliminar</button> 
+            </form>
+          </td>
+          <td>
+            <a href="/editDisco/<%= disco._id %>" class="btn btn-success">
+              Editar
+            </a>
+          </td>
+        </tr> -->
+      </tbody>
+    </table>
+    <div class="card-body texto-blanco"><%= disco.info %></div>
+  </div>
+  <div class="col-md-8 centrar">
+    <!-- <h3>Canciones del disco</h3> -->
+    <table class="table table-bordered table-hover">
+      <thead class="cabecera">
+        <tr class="canciones-disco">
+          <th></th>
+          <th>Canciones del disco</th>
+          <th></th>
+        </tr>
+      </thead>
+      <% for(var i=0; i < disco.canciones.length; i++){ %>
+        <tr>
+          <td>
+            <%= i+1 %>
+          </td>
+          <% if(disco.titulo == "En directo en la sala Clamores" || disco.titulo == "Sin miedo a perder" || disco.titulo == "Una noche sin ti - Disco 1"  || disco.titulo == "Una noche sin ti - Disco 2"  || disco.titulo == "Live in Holland 1990"  || disco.titulo == "Shangri live in Rome" || disco.titulo == "Tubular bells III live in London" || disco.titulo == "Nos va la marcha"){ %>
+            <td>
+              <strong>
+                <audio controls type="audio/mpeg" src="<%= disco.canciones[i].enlace %>">
+                </audio></br>
+                  <%= disco.canciones[i].tit_cancion %>
+                <span class="nombre-interprete"> 
+                  &nbsp; <%= disco.canciones[i].num_cancion %>
+                </span>
+              </strong>
+            </td>
+          <% } else { %>
+          <td>
+            <strong>
+              <a href="<%= disco.canciones[i].enlace %>" target="_blank">
+                <%= disco.canciones[i].tit_cancion %>
+              </a>
+              <span class="nombre-interprete"> 
+                &nbsp; <%= disco.canciones[i].num_cancion %>
+              </span>
+            </strong>
+          </td>
+          <% } %>
+          <td class="duracion">
+            <%= disco.canciones[i].dur_cancion %>
+          </td>
+        </tr>
+      <% } %>
+    </table>
+  </div>
+  <div class="card-body centrar-texto">
+    <a href="/discos/a" class="btn btn-volver">
+      Volver
+    </a>
+  </div>
+</div>
+<script>
+  let botones = document.getElementsByClassName('delete')
+  for(let i=0; i<botones.length; i+=1) {
+    botones[i].addEventListener('click', (e) => {
+      let respuesta = confirm('Estás seguro de querer eliminar este disco?')
+      if(!respuesta){
+        e.preventDefault()
+      }
+    })
+  }
+</script>
+<% include partials/_footer %>
