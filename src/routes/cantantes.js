@@ -62,61 +62,6 @@ router.get('/verCantante/:id', async (req, res) => {
 			})
 })
 
-// router.get('/addCantante', (req, res) => {
-// 	res.render('addCantante', {
-// 		title: 'añadir cantante'
-// 	})
-// })
-
-// router.post('/addCantante', async (req, res) => {
-// 	const {nombre, nacionalidad, info, caratula} = req.body;
-	
-// 	await Interprete.create({nombre, nacionalidad, info, caratula});
-
-// 	res.redirect('/cantantes/1')
-// })
-
-// router.get('/editCantante/:id', async (req, res) => {
-// 	let id = req.params.id
-
-// 	await Interprete
-// 	.findById(id)
-// 	.populate('discos')
-// 		.then(interprete => {
-// 			res.render('editCantante', { 
-// 				title: 'Editar el cantante',
-// 				interprete 
-// 			})
-// 		})
-// 		.catch(err => {
-// 			console.error('Error:', err)
-// 		})
-// })
-
-// router.put('/editCantante/:id', async (req, res) => {
-//   let id = req.params.id
-		
-// 	await Interprete.findByIdAndUpdate(id, req.body)
-// 		.then(interprete => {
-// 			res.redirect('/cantantes/1');
-// 		})
-// 		.catch(err => {
-// 			console.error('Error:', err)
-// 		})
-// });
-
-// router.delete('/deleteCantante/:id', async (req, res) => {
-//   const {id} = req.params
-	
-// 	await Interprete.findByIdAndDelete(id)
-// 		.then(cantante => {
-// 			res.redirect('/cantantes/1');
-// 		})
-// 		.catch(err => {
-// 			console.error('Error:', err)
-// 		})
-// });
-
 router.get('/buscando', async (req, res) => {
 	if(req.query.buscar) {
 		await Interprete
