@@ -1,100 +1,35 @@
-'use strict'
+'use strict';
 
-const Interprete = require('../model/Interprete');
-const Disco = require('../model/Disco');
-const Cancion = require('../model/Cancion');
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res) => {
-	res.render('index', {
-			title: 'mi colección de música'
-		})
-})
+const cantantesController = require('../controllers/cantantes.controller');
 
-router.get('/cantantes/:pagina', async (req, res) => {
-	let porPagina = 10,
-			pagina = req.params.pagina || 1;
-	
-	await Interprete
-		.find({})
-		.sort({nombre: 1})
-		.skip((porPagina * pagina) - porPagina)
-		.limit(porPagina)
-		.populate('discos')
-		.populate('canciones')
-		.exec()
-			.then(interpretes => {
-				Interprete.countDocuments()
-					.then(cuenta =>{
-						res.render('cantantes', {
-							interpretes,
-							title: 'Indice de cantantes',
-							current: pagina,
-							paginas: Math.ceil(cuenta/porPagina)
-						})
-					})
-					.catch(err =>{
-						console.error('Error:', err)
-					})
-			})
-			.catch(err => {
-				console.error('Error:', err)
-			})
-});
+// Eliminar cantante
+router.delete('/deleteCantante/:id', cantantesController.eliminarInterprete);
 
-router.get('/verCantante/:id', async (req, res) => {
-	let id = req.params.id;
+// Formulario editar cantante
+router.get('/editCantante/:id', cantantesController.formEditarInterprete)
 
-	await Interprete
-		.findById(id)
-		.populate('canciones')
-		.populate('discos')
-		.exec()
-			.then(interprete => {
-				res.render('verCantante', {
-					title: 'toda la información del cantante',
-					interprete
-				})
-			})
-			.catch(err => {
-				console.error('Error:', err)
-			})
-})
+// Editar cantante
+router.put('/editCantante/:id', cantantesController.editarInterprete)
 
-router.get('/buscando', async (req, res) => {
-	if(req.query.buscar) {
-		await Interprete
-		.find({nombre: {$regex:'.*'+req.query.buscar+'.*', $options:'i'}})
-		.exec()
-			.then(interpretes => {
-				Disco
-				.find({titulo: {$regex: '.*'+req.query.buscar+'.*', $options: 'i'}})
-				.exec()
-					.then(discos => {
-						if(interpretes.length == 0 && discos.length == 0){
-							res.render('noEncontrado', {title: 'Buscador de cantantes y discos'})
-						}else {
-							res.render('buscar', {
-								title: 'buscador de cantantes y discos',
-								interpretes,
-								discos
-							})
-						}
-					})
-					.catch(err => {
-						console.error('Error:', err)
-					})
-			})
-			.catch(err => {
-				console.error('Error:', err)
-			})
-	}else{
-		res.render('noEncontrado', {
-			title: 'Buscador de cantantes y discos'
-		})
-	}
-});
+// Formulario intérprete nuevo
+router.get('/cantantes/nuevo', cantantesController.formNuevoInterprete);
 
+// Crear intérprete
+router.post('/cantantes', cantantesController.crearInterprete);
+
+// Home
+router.get('/', cantantesController.home);
+
+// Listado cantantes
+router.get('/cantantes/:pagina', cantantesController.listarCantantes);
+
+// Ver cantante
+router.get('/verCantante/:id', cantantesController.verCantante);
+
+// Buscador
+router.get('/buscando', cantantesController.buscar);
 
 module.exports = router;

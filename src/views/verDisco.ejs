@@ -1,97 +1,116 @@
 <% include partials/_header %>
-<!-- <%= disco.titulo %> -->
+
 <div class="container">
-  <div class="col-md-8 centrar">
-    <table class="table table-bordered table-hover ver">
-      <thead class="cabecera">
-        <th class="transparente"></th>
-        <th>Título del disco</th>
-        <th>Intérprete</th>
-      </thead>
-      <tbody>
-        <tr>
-          <td rowspan="2">
-            <img src="<%= disco.caratula %>" alt="" width="300px" height="300px">
-          </td>
-          <td class="nombre-disco centrar-texto"><%= disco.titulo %></td>
-          <td>
-            <a class="grande" href="/verCantante/<%= disco.interprete._id %>">
-              <%= disco.interprete.nombre %>
+  <!-- Cabecera disco -->
+  <div class="card shadow-lg border-0 mb-5">
+    <div class="row g-0">
+      <!-- Carátula -->
+      <div class="col-lg-4 text-center p-4">
+        <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="img-fluid rounded shadow" style="max-height: 450px; object-fit: contain; background-color: #111;">
+      </div>
+      <!-- Información -->
+      <div class="col-lg-8">
+        <div class="card-body h-100 d-flex flex-column justify-content-center">
+          <h1 class="display-5 fw-bold mb-3">
+            💿 <%= disco.titulo %>
+          </h1>
+          <h3 class="mb-3">
+            <a href="/verCantante/<%= disco.interprete._id %>" class="text-decoration-none">
+              <%=disco.interprete.nombre %>
             </a>
-          </td>
-        </tr>
-        <tr>
-          <td>Año publicación: <%= disco.anyo %></td>
-          <td>
-            <a href="/verCantante/<%= disco.interprete._id %>">
-              <img class="redondo" src="<%= disco.interprete.caratula %>" alt="" width="100px" height="100px"></td>
-            </a>
-        </tr>
-        <!-- <tr>
-          <td>
-            <form action="/deleteDisco/<%= disco._id %>?_method=DELETE" method="POST">
-              <input type="hidden" name="_method" value="DELETE">
-              <button class="btn btn-danger delete" type="submit">Eliminar</button> 
-            </form>
-          </td>
-          <td>
-            <a href="/editDisco/<%= disco._id %>" class="btn btn-success">
-              Editar
-            </a>
-          </td>
-        </tr> -->
-      </tbody>
-    </table>
-    <div class="card-body texto-blanco"><%= disco.info %></div>
-  </div>
-  <div class="col-md-8 centrar">
-    <!-- <h3>Canciones del disco</h3> -->
-    <table class="table table-bordered table-hover">
-      <thead class="cabecera">
-        <tr class="canciones-disco">
-          <th></th>
-          <th>Canciones del disco</th>
-          <th></th>
-        </tr>
-      </thead>
-      <% for(var i=0; i < disco.canciones.length; i++){ %>
-        <tr>
-          <td>
-            <%= i+1 %>
-          </td>
-          <% if(disco.titulo == "En directo en la sala Clamores" || disco.titulo == "Sin miedo a perder" || disco.titulo == "Una noche sin ti - Disco 1"  || disco.titulo == "Una noche sin ti - Disco 2"  || disco.titulo == "Live in Holland 1990"  || disco.titulo == "Shangri live in Rome" || disco.titulo == "Tubular bells III live in London" || disco.titulo == "Nos va la marcha"){ %>
-            <td>
-              <strong>
-                <audio controls type="audio/mpeg" src="<%= disco.canciones[i].enlace %>">
-                </audio></br>
-                  <%= disco.canciones[i].tit_cancion %>
-                <span class="nombre-interprete"> 
-                  &nbsp; <%= disco.canciones[i].num_cancion %>
-                </span>
-              </strong>
-            </td>
-          <% } else { %>
-          <td>
-            <strong>
-              <a href="<%= disco.canciones[i].enlace %>" target="_blank">
-                <%= disco.canciones[i].tit_cancion %>
-              </a>
-              <span class="nombre-interprete"> 
-                &nbsp; <%= disco.canciones[i].num_cancion %>
-              </span>
-            </strong>
-          </td>
+          </h3>
+          <p class="text-muted mb-3">
+            📅 Año publicación: <%= disco.anyo %>
+          </p>
+          <% if(disco.info) { %>
+            <div class="alert alert-dark">
+              <%= disco.info %>
+            </div>
           <% } %>
-          <td class="duracion">
-            <%= disco.canciones[i].dur_cancion %>
-          </td>
-        </tr>
-      <% } %>
-    </table>
+          <!-- Botones crud -->
+          <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="/editDisco/<%= disco._id %>" class="btn btn-success">
+              Editar disco
+            </a>
+            <form action="/deleteDisco/<%= disco._id %>?_method=DELETE" method="post">
+              <input type="hidden" name="_method" value="DELETE">
+              <button class="btn btn-danger delete" type="submit">
+                Eliminar disco
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="card-body centrar-texto">
-    <a href="/discos/a" class="btn btn-volver">
-      Volver
+  <!-- Canciones -->
+  <div class="mb-4">
+    <h2 class="mb-4">
+      🎵 Canciones del disco
+    </h2>
+    <div class="row g-4">
+      <% disco.canciones.forEach((cancion, index) => { %>
+        <div class="col-12">
+          <div class="card shadow-sm border-0">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <!-- Número -->
+                <div class="col-md-1 text-center">
+                  <span class="fs-4 fw-bold text-muted">
+                    <%= index + 1 %>
+                  </span>
+                </div>
+                <!-- Info -->
+                <div class="col-md-5">
+                  <h5 class="mb-1">
+                    <a href="/verCancion/<%= cancion._id %>" class="text-decoration-none">
+                      <%= cancion.tit_cancion %>
+                    </a>
+                    <% if(cancion.artista_pista) { %>
+                      <span class="text muted">
+                        - <em><%= cancion.artista_pista %></em>
+                      </span>
+                    <% } %>
+                  </h5>
+                  <small class="text-muted">
+                    ⏱ <%= cancion.dur_cancion %>
+                  </small>
+                </div>
+                <!-- Reproductor / YouTube-->
+                <div class="col-md-4">
+                  <% if(disco.esAudioLocal) { %>
+                    <audio controls style="width: 100%;">
+                      <source src="<%= cancion.enlace %>" type="audio/mpeg">
+                    </audio>
+                  <% } else { %>
+                    <a href="<%= cancion.enlace %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-danger btn-sm">
+                      ▶ Ver / escuchar
+                    </a>
+                  <% } %>
+                </div>
+                <!-- Acciones -->
+                <div class="col-md-2 text-end">
+                  <a href="/editCancion/<%= cancion._id %>" class="btn btn-outline-success btn-sm mb-2">
+                    Editar
+                  </a>
+                  <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE" method="post">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button class="btn btn-outline-danger btn-sm delete" type="submit">
+                      Eliminar
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+  <!-- Volver -->
+  <div class="text-center mb-5">
+    <a href="/discos/1" class="btn btn-volver">
+      Volver a discos
     </a>
   </div>
 </div>
@@ -106,4 +125,5 @@
     })
   }
 </script>
+
 <% include partials/_footer %>

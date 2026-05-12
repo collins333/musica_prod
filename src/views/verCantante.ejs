@@ -1,68 +1,88 @@
 <% include partials/_header %>
+
 <div class="container">
-  <div class="col-md-8 centrar">
-    <table class="table table-bordered table-hover ver">
-      <tbody>
-        <tr>
-          <td>
-            <img src="<%= interprete.caratula %>" alt="" width="300px" height="300px">
-          </td>
-          <td class="nombre-cantante">
-            <%= interprete.nombre %>
-          </td>
-          <td class="grande"><%= interprete.nacionalidad %></td>
-        </tr>
-        <!-- <tr>
-          <td>
-            <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE" method="POST">
-              <input type="hidden" name="_method" value="DELETE">
-              <button class="btn btn-danger delete" type="submit">Eliminar</button> 
-            </form>
-          </td>
-          <td>
+  <!-- Cabecera intérprete -->
+  <div class="card shadow-lg border-0 mb-5">
+    <div class="row g-0">
+      <!-- Imagen -->
+      <div class="col-lg-4 text-center p-4">
+        <img src="<%= interprete.caratula %>" alt="<%= interprete.nombre %>" class="img-fluid rounded shadow" style="max-height: 450px; object-fit: contain; background-color: #111;">
+      </div>
+      <!-- Información -->
+      <div class="col-lg-8">
+        <div class="card-body h-100 d-flex flex-column justify-content-center">
+          <h1 class="display-4 fw-bold mb-3">
+            🎤 <%= interprete.nombre %>
+          </h1>
+          <% if(interprete.nacionalidad) { %>
+            <p class="fs-5 text-muted mb-4">
+              🌍 <%= interprete.nacionalidad %>
+            </p>
+          <% } %>
+          <% if(interprete.info) { %>
+            <div class="alert alert-dark">
+              <%= interprete.info %>
+            </div>
+          <% } %>
+          <!-- Botones crud -->
+          <div class="d-flex flex-wrap gap-2 mt-3">
             <a href="/editCantante/<%= interprete._id %>" class="btn btn-success">
-              Editar
+              Editar intérprete
             </a>
-          </td>
-        </tr> -->
-      </tbody>
-    </table>
-    <div class="card-body texto-blanco"><%= interprete.info %></div>
+            <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE" method="post">
+              <input type="hidden" name="_method" value="DELETE">
+              <button class="btn btn-danger delete" type="submit">
+                Eliminar intérprete
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="col-md-8 centrar">
-    <!-- <h3>Discos en la colección</h3> -->
-    <table class="table table-bordered table-hover ver">
-      <thead class="cabecera">
-        <tr class="discos-coleccion">
-          <th>
-            <span class="discos">
-              Discos en la colección
-            </span>
-          </th>
-          <th></th>
-        </tr>
-      </thead>
-      <% for(var i=0; i < interprete.discos.length; i++){ %>
-        <tr>
-          <td>
-            <strong>
-              <span class="titulo">
-                <%= interprete.discos[i].titulo %>
-              </span>
-            </strong>
-          </td>
-          <td class="centrar-texto">
-            <a href="/verDisco/<%= interprete.discos[i]._id %>">
-              <img src="<%= interprete.discos[i].caratula %>" alt="" width="50px" height="50px">
+  <!-- Discografía -->
+  <div class="mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>
+        💿 Discografía
+      </h2>
+      <span class="text-muted">
+        <%= interprete.discos.length %> discos
+      </span>
+    </div>
+    <div class="row g-4">
+      <% interprete.discos.forEach(disco => { %>
+        <div class="col-md-6 col-lg-4">
+          <div class="card shadow-sm border-0 h-100 hover-card">
+            <!-- Carátula -->
+            <a href="/verDisco/<%= disco._id %>">
+              <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="card-img-top p-3" style="height: 320px; object-fit: contain; background-color: #111;">
             </a>
-          </td>
-        </tr>
-      <% } %>
-    </table>
+            <!-- Info -->
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">
+                <a href="/verDisco/<%= disco._id %>" class="text-decoration-none text-light">
+                  <%= disco.titulo %>
+                </a>
+              </h5>
+              <p class="text-muted mb-3">
+                📅 <%= disco.anyo %>
+              </p>
+              <div class="mt-auto">
+                <a href="/verDisco/<%= disco._id %>" class="btn btn-outline-primary btn-sm">
+                  Ver disco
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
   </div>
-  <div class="card-body centrar-texto">
-    <a href="/cantantes/cantantes" class="btn btn-volver">
-      Volver
+  <!-- Volver -->
+  <div class="text-center mb-5">
+    <a href="/cantantes/1" class="btn btn-volver">
+      Volver a intérpretes
     </a>
   </div>
 </div>
@@ -77,4 +97,5 @@
     })
   }
 </script>
+
 <% include partials/_footer %>

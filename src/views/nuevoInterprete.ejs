@@ -1,0 +1,58 @@
+<% include partials/_header %>
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="card shadow border-0 mt-4">
+<div class="card-header cabecera">
+    <h3 class="mb-0">
+        🎤 Añadir nuevo intérprete
+    </h3>
+</div>
+<div class="card-body">
+    <form action="/cantantes" method="post">
+        <!-- Nombre -->
+        <div class="form-group mb-3">
+            <label for="nombre">
+                <strong>Nombre</strong>
+            </label>
+            <input type="text" name="nombre" class="form-control">
+        </div>
+        <!-- Nacionalidad -->
+        <div class="form-group mb-3">
+            <label for="nacionalidad">
+                <strong>Nacionalidad</strong>
+            </label>
+            <input type="text" name="nacionalidad" class="form-control">
+        </div>
+        <!-- Carátula -->
+        <div class="form-group mb-3">
+            <label for="caratula">
+                <strong>Carátula (URL)</strong>
+            </label>
+            <input type="text" name="caratula" class="form-control">
+        </div>
+        <!-- Info -->
+        <div class="form-group mb-3">
+            <label for="info">
+                <strong>Información</strong>
+            </label>
+            <textarea name="info" class="form-control"></textarea>
+        </div>
+        <!-- Botones -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="/cantantes/1" class="btn btn-volver">
+                ← Volver
+            </a>
+            <button class="btn btn-success">
+                Guardar intérprete
+            </button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</div> 
+</div>
+
+<% include partials/_footer %>

@@ -97,3 +97,58 @@ td a:hover {
   font-size: 1.2rem;
   font-weight: bold;
 }
+
+.container {
+  margin-top: 20px;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+img {
+  object-fit: cover;
+}
+
+.hover-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.card-img-top {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.pagination .page-link {
+  background-color: #1e1e1e;
+  border-color: #555;
+  color: #00d4ff;
+}
+
+.pagination .page-link:hover {
+  background-color: #333;
+  color: white;
+}
+
+.pagination .active .page-link {
+  background-color: #00d4ff;
+  border-color: #00d4ff;
+}
+
+.audio-mini {
+  width: 150px;
+  height: 30px;
+  margin-left: 1rem;
+  vertical-align: middle;
+}
+
+.card {
+  background-color: #1e1e1e;
+  color: #eee;
+}
+

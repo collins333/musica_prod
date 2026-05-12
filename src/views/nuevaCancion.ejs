@@ -1,0 +1,82 @@
+<% include partials/_header %>
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="card shadow border-0 mt-4">
+<div class="card-header cabecera">
+<h3 class="mb-0">
+🎵 Añadir nueva canción
+</h3>
+</div>
+<div class="card-body">
+<form action="/canciones" method="post">
+<!-- Título -->
+<div class="form-group mb-4">
+    <label for="tit_cancion">
+        <strong>Título de la canción</strong>
+    </label>
+    <input type="text" class="form-control" id="tit_cancion" name="tit_cancion" required>
+</div>
+<!-- Duración -->
+<div class="form-group mb-4">
+    <label for="dur_cancion">
+        <strong>Duración</strong>
+    </label>
+    <input type="text" class="form-control" id="dur_cancion" name="dur_cancion"
+    placeholder="Ejemplo: 4:35">
+</div>
+<!-- Enlace -->
+<div class="form-group mb-4">
+    <label for="enlace">
+        <strong>Enlace</strong>
+    </label>
+    <input type="text" class="form-control" id="enlace" name="enlace">
+</div>
+<!-- Número de pista -->
+<div class="form-group mb-4">
+    <label for="num_cancion">
+        <strong>Número de pista</strong>
+    </label>
+    <input type="number" class="form-control" id="num_cancion" name="num_cancion" min="1">
+</div>
+<!-- Artista -->
+<div class="form-group mb-4">
+    <label for="artista_pista">
+        <strong>Artista de la pista</strong>
+    </label>
+    <input type="text" class="form-control" id="arista_pista" name="artista_pista">
+</div>
+<!-- Disco -->
+<div class="form-group mb-4">
+    <label for="del_disco">
+        <strong>Disco</strong>
+    </label>
+    <select name="del_disco" id="del_disco" class="form-control" required>
+        <option value="">
+            -- Selecciona un disco --
+        </option>
+        <% discos.forEach(disco => { %>
+            <option value="<%= disco._id %>">
+                <%= disco.titulo %> - <%= disco.interprete.nombre %>
+            </option>
+        <% }) %>
+    </select>
+</div>
+<!-- Botones -->
+<div class="d-flex justify-content-between mt-5">
+    <a href="/canciones/1" class="btn btn-volver">
+        ← Volver
+    </a>
+    <button class="btn btn-success" type="submit">
+        Guardar cancion
+    </button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<% include partials/_footer %>

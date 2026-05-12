@@ -1,95 +1,86 @@
 <% include partials/_header %>
+
 <div class="container">
-  <div class="col-md-8 centrar">
-    <table class="table table-bordered table-hover">
-      <thead class="cabecera">
-        <tr>
-          <th>N°</th>
-          <th>Título</th>
-          <th>Intérprete</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% for(var i=0; i < discos.length; i++) { %>
-          <tr>
-            <td><%= i + 1 %></td>
-            <td>
-              <strong>
-                <a href="/verDisco/<%= discos[i]._id %>">
-                  <%= discos[i].titulo %>
-                </a>
-              </strong>
-            </td>
-            <td>
-              <a href="/verCantante/<%= discos[i].interprete._id %>/">
-                <%= discos[i].interprete.nombre %></td>
-              </a>
-            <td>
-              <a href="/verDisco/<%= discos[i]._id %>">
-                <img src="<%= discos[i].caratula %>" alt="" width="50px" height="50px">
-              </a>
-            </td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
-    <div class="row">
-      <% if(paginas) { %>
-        <nav class="mx-auto">
-          <ul class="pagination">
-            <!--primera página-->
-            <% if(current == 1) { %>
-              <li class="page-item disabled">
-                <a href="#" class="page-link">Primera página</a>
-              </li>
-            <% } else { %>
-              <li class="page-item">
-                <a href="/discos/1" class="page-link">Primera página</a>
-              </li>
-            <% } %>
-            <!--Páginas intermedias-->
-            <% var i = Number(current) > 5 ? Number(current) - 4 : 1 %>	
-            <% if(i !== 1) { %>
-              <li class="page-item disabled">
-                <a href="#" class="page-link">...</a>
-              </li>
-            <% } %>
-            <% for(; i<=Number(current)+4 && i<=paginas; i+=1) { %>
-              <% if(i == current) { %>
-                <li class="page-item active">
-                  <a href="<%= i %>" class="page-link"><%= i %></a>
-                </li>
-              <% } else { %>
-                <li class="page-item">
-                  <a href="/discos/<%= i %>" class="page-link"><%= i %></a>
-                </li>
-              <% } %>
-              <% if(i == Number(current) + 4 && i < paginas) { %>
-                <li class="page-item disabled">
-                  <a href="#" class="page-link">...</a>
-                </li>
-              <% } %>
-            <%} %>
-            <!--última página-->
-            <% if(current == paginas) { %>
-              <li class="page-item disabled">
-                <a href="#" class="page-link">Ultima página</a>
-              </li>
-            <% } else { %>
-              <li class="page-item">
-                <a href="/discos/<%= paginas %>" class="page-link">Ultima página</a>
-              </li>
-            <% } %>
-          </ul>
-        </nav>
-      <% } %>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">
+      Discos
+    </h1>
+    <div class="d-flex align-items-center gap-3">
+      <a href="/discos/nuevo" class="btn btn-primary">
+        + Añadir disco
+      </a>
+      <span class="text-muted">
+        Página <%= current %> de <%= paginas %>
+      </span>
     </div>
   </div>
-  <div class="card-body centrar-texto">
-    <a href="/" class="btn btn-volver">
-      Volver
-    </a>
+  <div class="row g-4">
+    <% discos.forEach(disco => { %>
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 hover-card">
+          <a href="/verDisco/<%= disco._id %>">
+            <img src="<%= disco.caratula %>" class="card-img-top" alt="<%= disco.titulo %>" style="height: 320px; object-fit: contain; background-color: #111;">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title fw-bold">
+              <a href="/verDisco/<%= disco._id %>" class="text-decoration-none text-light">
+                <%= disco.titulo %>
+              </a>
+            </h5>
+            <p class="mb-1">
+              <a href="/verCantante/<%= disco.interprete._id %>" class="text-decoration-none">
+                <%= disco.interprete.nombre %>
+              </a>
+            </p>
+            <small class="text-muted">
+              <%= disco.anyo %>
+            </small>
+          </div>
+        </div>
+      </div>
+    <% }) %>
   </div>
+  <!-- PAGINACIÓN -->
+  <% if(paginas > 1) { %>
+    <nav class="mt-5">
+      <ul class="pagination justify-content-center">
+        <% if(current > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="/discos/<%= current - 1 %>">
+              Anterior
+            </a>
+          </li>
+        <% } %>
+        <%
+         const paginaActual = Number(current);
+         let inicio = paginaActual - 4;
+         let fin = paginaActual + 4;
+         if(inicio < 1) {
+          inicio = 1;
+          fin = Math.min(9, paginas);
+         }
+         if(fin > paginas) {
+          fin = paginas;
+          inicio = Math.max(1, paginas - 8);
+         }
+        %>
+        <% for(let i = inicio; i <= fin; i++) { %>
+          <li class="page-item <%= i === paginaActual ? 'active' : '' %>">
+            <a class="page-link" href="/discos/<%= i %>">
+              <%= i %>
+            </a>
+          </li>
+        <% } %>
+        <% if(current < paginas) { %>
+          <li class="page-item">
+            <a class="page-link" href="/discos/<%= Number(current) + 1 %>">
+              Siguiente
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+  <% } %>
 </div>
+
 <% include partials/_footer %>

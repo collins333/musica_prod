@@ -1,61 +1,87 @@
 <% include partials/_header %>
-<!-- <%= cancion %> -->
+
 <div class="container">
-  <div class="col-md-8 centrar">
-    <table class="table table-bordered table-hover">
-      <thead class="cabecera">
-        <th>Intérprete</th>
-        <th>Título</th>
-        <th>Duración</th>
-      </thead>
-      <tr>
-        <td><%= cancion.num_cancion %></td>
-        <td class="titulo">
-          <a href="<%= cancion.enlace %>" target="_blank">
-            <%= cancion.tit_cancion %>
-          </a>
-        </td>
-        <td class="centrar-texto"><%= cancion.dur_cancion %></td>
-      </tr>      
-      <tr>
-        <td><strong>Album:</strong></td>
-        <td colspan="2">
-          <a href="/verDisco/<%= cancion.del_disco._id %>">
-            <%= cancion.del_disco.titulo %>
-          </a>
-        </td>
-      </tr>
-      <tr>
-        <td></td>
-        <td>
-          <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE" method="POST">
-            <input type="hidden" name="_method" value="DELETE">
-            <button class="btn btn-danger delete" type="submit">Eliminar</button> 
-          </form>
-        </td>
-        <td>
-          <a href="/editCancion/<%= cancion._id %>" class="btn btn-success">
-            Editar
-          </a>
-        </td>
-      </tr>
-    </table>
+  <div class="card shadow-lg border-0 mb-4">
+    <div class="row g-0">
+      <!-- Portada -->
+      <div class="col-md-4 text-center p-4">
+        <a href="/verDisco/<%= cancion.del_disco._id %>">
+          <img src="<%= cancion.del_disco.caratula %>" class="img-fluid rounded shadow" style="max-height: 400px; object-fit: contain; background-color: #111;" alt="<%= cancion.del_disco.titulo %>">
+        </a>
+      </div>
+      <!-- Info -->
+      <div class="col-md-8">
+        <div class="card-body h-100 d-flex flex-column justify-content-center">
+          <h2 class="display-5 fw-bold mb-3">
+            🎵 <%= cancion.tit_cancion %>
+          </h2>
+          <h3>
+            <% if(cancion.artista_pista) { %>
+              <span class="text muted">
+                <em><%= cancion.artista_pista %></em>
+              </span>
+            <% } %>
+          </h3>
+          <h4 class="mb-3">
+            <a href="/verCantante/<%= cancion.del_disco.interprete._id %>" class="text-decoration-none">
+              <%= cancion.del_disco.interprete.nombre %>              
+            </a>
+          </h4>
+          <p class="mb-2">
+            💿 <a href="/verDisco/<%= cancion.del_disco._id %>" class="text-decoration-none">
+              <%= cancion.del_disco.titulo %>
+            </a>
+          </p>
+          <p class="text-muted mb-4">
+            ⏱ Duración: <%= cancion.dur_cancion %>
+          </p>
+          <!-- Reproductor -->
+          <% if(cancion.del_disco.esAudioLocal) { %>
+            <div class="mb-4">
+              <audio controls style="width: 100%;">
+                <source src="<%= cancion.enlace %>" type="audio/mpeg">
+              </audio>
+            </div>
+          <% } else { %>
+            <div class="mb-4">
+              <a href="<%= cancion.enlace %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-danger">
+                ▶ Ver / escuchar en YouTube
+              </a>
+            </div>
+          <% } %>
+          <!-- Botones crud -->
+          <div class="d-flex gap-2 flex-wrap">
+            <a href="/editCancion/<%= cancion._id %>" class="btn btn-success">
+              Editar
+            </a>
+            <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE" method="post">
+              <input type="hidden" name="_method" value="DELETE">
+              <button class="btn btn-danger delete" type="submit">
+                Eliminar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="card-body centrar-texto">
-    <a href="/canciones/canciones" class="btn btn-volver">
-      Volver
+  <!-- Volver -->
+  <div class="text-center mb-5">
+    <a href="/canciones/1" class="btn btn-volver">
+      Volver a canciones
     </a>
   </div>
 </div>
 <script>
-  let botones = document.getElementsByClassName('delete')
-  for(let i=0; i<botones.length; i+=1) {
+  let botones = document.getElementsByClassName('delete');
+  for(let i=0; i<botones.length; i++) {
     botones[i].addEventListener('click', (e) => {
-      let respuesta = confirm('Estás seguro de querer eliminar este disco?')
-      if(!respuesta){
-        e.preventDefault()
+      let respuesta = confirm('¿Estás seguro de querer eliminar esta canción?');
+      if(!respuesta) {
+        e.preventDefault();
       }
-    })
+    });
   }
 </script>
+
 <% include partials/_footer %>

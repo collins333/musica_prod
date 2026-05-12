@@ -1,49 +1,94 @@
 <% include partials/_header %>
-<div class="container">
-  <div class="row">
-    <div class="col-md-7 centrar">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr class="cabecera">
-            <th>N°</th>
-            <th>Cantante / Disco</th>
-            <th>Carátula</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(var i=0; i < interpretes.length; i++) { %>
-            <tr>
-              <td><%= i + 1 %></td>
-              <td><strong>
-                <a href="/verCantante/<%= interpretes[i]._id %>">
-                  <%= interpretes[i].nombre %></strong>
-                </a>
-              </td>
-              <td class="centrar-texto">
-                <a href="/verCantante/<%= interpretes[i]._id %>">
-                  <img src="<%= interpretes[i].caratula %>" alt="" width="50px" height="50px">
-                </a>
-              </td>
-            </tr>
-          <% } %>
-          <% for(var j=0; j < discos.length; j++) { %>
-            <tr>
-              <td><%= j + 1 %></td>
-              <td><strong>
-                <a href="/verDisco/<%= discos[j]._id %>" class="text-primary">
-                  <%= discos[j].titulo %></strong>
-                </a>
-              </td>
-              <td class="centrar-texto">
-                <a href="/verDisco/<%= discos[j]._id %>">
-                  <img src="<%= discos[j].caratula %>" alt="" width="50px" height="50px">
-                </a>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-    </div>
+
+<div class="container py-4">
+  <!-- Título -->
+  <div class="text-center mb-5">
+    <h1 class="text-light">
+      🔎 Resultados de búsqueda
+    </h1>
+    <p class="text-light">
+      Resultados para:
+      <strong class="text-warning">
+        "<%= query %>"
+      </strong>
+    </p>
   </div>
+  <!-- Intérpretes -->
+  <% if(interpretes.length > 0) { %>
+    <h2 class="mb-4 text-warning fw-bold">
+      🎤 Intérpretes
+    </h2>
+    <div class="row g-4 mb-5">
+      <% interpretes.forEach(interprete => { %>
+        <div class="col-md-4">
+          <div class="card bg-dark text-light h-100 shadow hover-card border-secondary">
+            <a href="/verCantante/<%= interprete._id %>">
+              <img src="<%= interprete.caratula %>" class="card-img-top" alt="<%= interprete.nombre %>" style="height: 300px; object-fit: contain; background-color: #111;">
+            </a>
+            <div class="card-body text-center">
+              <h5 class="card-title">
+                <a href="/verCantante/<%= interprete._id %>" class="text-warning text-decoration-none">
+                  <%= interprete.nombre %>
+                </a>
+              </h5>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+  <!-- Discos -->
+  <% if(discos.length > 0) { %>
+    <h2 class="mb-4 text-warning fw-bold">
+      💿 Discos
+    </h2>
+    <div class="row g-4 mb-5">
+      <% discos.forEach(disco => { %>
+        <div class="col-md-3">
+          <div class="card bg-dark text-light h-100 shadow hover-card border-secondary">
+            <a href="/verDisco/<%= disco._id %>">
+              <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="card-img-top"  style="height: 250px; object-fit: contain; background-color: #111;">
+            </a>
+            <div class="card-body text-center">
+              <h5 class="card-title">
+                <a href="/verDisco/<%= disco._id %>" class="text-warning text-decoration-none">
+                  <%= disco.titulo %>
+                </a>
+              </h5>
+              <p class="text-light mb-8">
+                <%= disco.anyo %>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+  <!-- Canciones -->
+  <% if(canciones.length > 0) { %>
+    <h2 class="mb-4 text-warning fw-bold">
+      🎶 Canciones
+    </h2>
+    <div class="list-group mb-5">
+      <% canciones.forEach(cancion => { %>
+        <a href="/verCancion/<%= cancion._id %>" class="list-group-item list-group-item-action-bg-dark text-light border-secondary py-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong class="text-warning">
+                <%= cancion.tit_cancion %>
+              </strong>
+              <span class="text-light ms-2">
+                (<%= cancion.del_disco.titulo %>)
+              </span>
+            </div>
+            <div class="text-light">
+              ⏱ <%= cancion.dur_cancion %>
+            </div>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  <% } %>
 </div>
+
 <% include partials/_footer %>

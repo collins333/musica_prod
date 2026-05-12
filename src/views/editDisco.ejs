@@ -1,0 +1,83 @@
+    <% include partials/_header %>
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-lg-8">
+<div class="card shadow border-0 mt-4">
+<div class="card-header cabecera">
+    <h3 class="mb-0">
+        💿 Editar disco
+    </h3>
+</div>
+<div class="card-body">
+    <form action="/editDisco/<%= disco._id %>?_method=PUT" method="post">
+        <!-- Título -->
+        <div class="form-group mb-3">
+            <label for="titulo">
+                <strong>Título</strong>
+            </label>
+            <input type="text" name="titulo" class="form-control" value="<%= disco.titulo %>">
+        </div>
+        <!-- Año -->
+        <div class="form-group mb-3">
+            <label for="anyo">
+                <strong>Año</strong>
+            </label>
+            <input type="text" name="anyo" class="form-control" value="<%= disco.anyo %>">
+        </div>
+        <!-- Carátula -->
+        <div class="form-group mb-3">
+            <label for="caratula">
+                <strong>Carátula (URL)</strong>
+            </label>
+            <input type="text" name="caratula" class="form-control" value="<%= disco.caratula %>">
+        </div>
+        <!-- Info -->
+        <div class="form-group mb-3">
+            <label for="info">
+                <strong>Información</strong>
+            </label>
+            <textarea name="info" class="form-control">
+                <%= disco.info %>
+            </textarea>
+        </div>
+        <!-- Intérprete -->
+        <div class="form-group mb-3">
+            <label for="interprete">
+                <strong>Intérprete</strong>
+            </label>
+            <select name="interprete" class="form-control" required>
+                <% interpretes.forEach(interprete => { %>
+                    <option value="<%= interprete._id %>" <%= disco.interprete.equals(interprete._id) ? 'selected' : '' %>>
+                        <%= interprete.nombre %>
+                    </option>
+                <% }) %>
+            </select>
+        </div>
+        <!-- Audio local -->
+        <div class="form-group mb-4">
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="esAudioLocal" name="esAudioLocal" value="true"
+                <%= disco.esAudioLocal ? 'checked' : '' %>>
+                <label for="esAudioLocal" class="form-check-label">
+                    El disco usa audio local
+                </label>
+            </div>
+        </div>
+        <!-- Botones -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="/discos/1" class="btn btn-volver">
+                ← Volver
+            </a>
+            <button class="btn btn-success">
+                Guardar disco
+            </button>
+        </div>
+    </form>
+</div>
+</div>
+</div>
+</div> 
+</div>
+
+<% include partials/_footer %>

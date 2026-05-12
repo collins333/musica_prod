@@ -1,0 +1,80 @@
+    <% include partials/_header %>
+
+    <div class="container">
+    <div class="row justify-content-center">
+    <div class="col-lg-8">
+    <div class="card shadow border-0 mt-4">
+    <div class="card-header cabecera">
+    <h3 class="mb-0">
+    🎵 Editar canción
+    </h3>
+    </div>
+    <div class="card-body">
+    <form action="/editCancion/<%= cancion._id %>?_method=PUT" method="post">
+    <!-- Título -->
+    <div class="form-group mb-4">
+    <label for="tit_cancion">
+    <strong>Título de la canción</strong>
+    </label>
+    <input type="text" class="form-control" id="tit_cancion" name="tit_cancion" value="<%= cancion.tit_cancion %>" required>
+    </div>
+    <!-- Duración -->
+    <div class="form-group mb-4">
+    <label for="dur_cancion">
+    <strong>Duración</strong>
+    </label>
+    <input type="text" class="form-control" id="dur_cancion" name="dur_cancion" value="<%= cancion.dur_cancion %>"
+    placeholder="Ejemplo: 4:35">
+    </div>
+    <!-- Enlace -->
+    <div class="form-group mb-4">
+    <label for="enlace">
+    <strong>Enlace</strong>
+    </label>
+    <input type="text" class="form-control" id="enlace" name="enlace" value="<%= cancion.enlace %>">
+    </div>
+    <!-- Número de pista -->
+    <div class="form-group mb-4">
+    <label for="num_cancion">
+    <strong>Número de pista</strong>
+    </label>
+    <input type="number" class="form-control" id="num_cancion" name="num_cancion" value="<%= cancion.num_cancion %>" min="1">
+    </div>
+    <!-- Artista de la pista -->
+    <div class="form-group mb-4">
+    <label for="artista_pista">
+    <strong>Artista de la pista</strong>
+    </label>
+    <input type="text" class="form-control" id="artista_pista" name="artista_pista" value="<%= cancion.artista_pista %>">
+    </div>
+    <!-- Disco -->
+    <div class="form-group mb-4">
+    <label for="del_disco">
+    <strong>Disco</strong>
+    </label>
+    <select name="del_disco" id="del_disco" class="form-control" required>
+
+    <% discos.forEach(disco => { %>
+        <option value="<%= disco._id %>" <%= cancion.del_disco.equals(disco._id) ? 'selected' : '' %>>
+        <%= disco.titulo %> — <%= disco.interprete.nombre %>
+        </option>
+    <% }) %>
+    </select>
+    </div>
+    <!-- Botones -->
+    <div class="d-flex justify-content-between mt-5">
+    <a href="/canciones/1" class="btn btn-volver">
+    ← Volver
+    </a>
+    <button class="btn btn-success" type="submit">
+    Editar cancion
+    </button>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <% include partials/_footer %>

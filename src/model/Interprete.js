@@ -9,7 +9,7 @@ const InterpreteSchema = new Schema({
   info: String,
   caratula: String,
   discos: [{type: Schema.Types.ObjectId, ref: "Disco"}],
-  canciones: [{type: Schema.Types.ObjectId, ref: "Cancion"}]
+  //canciones: [{type: Schema.Types.ObjectId, ref: "Cancion"}]
 });
 
 module.exports = mongoose.model('Interprete', InterpreteSchema);

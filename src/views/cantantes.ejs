@@ -1,94 +1,85 @@
 <% include partials/_header %>
+
 <div class="container">
-  <div class="row">
-    <div class="col-md-7 centrar">
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr class="cabecera">
-            <th>N°</th>
-            <th>Nombre</th>
-            <th>Nacionalidad</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% for(var i=0; i < interpretes.length; i++) { %>
-            <tr>
-              <td><%= i + 1 %></td>
-              <td>
-                <strong>
-                  <a href="/verCantante/<%= interpretes[i]._id %>">
-                    <%= interpretes[i].nombre %>
-                  </a>
-                </strong>
-              </td>
-              <td><%= interpretes[i].nacionalidad %></td>
-              <td class="centrar-texto">
-                <a href="/verCantante/<%= interpretes[i]._id %>">
-                  <img src="<%= interpretes[i].caratula %>" alt="" width="50px" height="50px">
-                </a>
-              </td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
-      <div class="row">
-        <% if(paginas) { %>
-          <nav class="mx-auto">
-            <ul class="pagination">
-              <!--primera página-->
-              <% if(current == 1) { %>
-                <li class="page-item disabled">
-                  <a href="#" class="page-link">Primera página</a>
-                </li>
-              <% } else { %>
-                <li class="page-item">
-                  <a href="/cantantes/1" class="page-link">Primera página</a>
-                </li>
-              <% } %>
-              <!--Páginas intermedias-->
-              <% var i = Number(current) > 5 ? Number(current) - 4 : 1 %>	
-              <% if(i !== 1) { %>
-                <li class="page-item disabled">
-                  <a href="#" class="page-link">...</a>
-                </li>
-              <% } %>
-              <% for(; i<=Number(current)+4 && i<=paginas; i+=1) { %>
-                <% if(i == current) { %>
-                  <li class="page-item active">
-                    <a href="<%= i %>" class="page-link"><%= i %></a>
-                  </li>
-                <% } else { %>
-                  <li class="page-item">
-                    <a href="/cantantes/<%= i %>" class="page-link"><%= i %></a>
-                  </li>
-                <% } %>
-                <% if(i == Number(current) + 4 && i < paginas) { %>
-                  <li class="page-item disabled">
-                    <a href="#" class="page-link">...</a>
-                  </li>
-                <% } %>
-              <%} %>
-              <!--última página-->
-              <% if(current == paginas) { %>
-                <li class="page-item disabled">
-                  <a href="#" class="page-link">Ultima página</a>
-                </li>
-              <% } else { %>
-                <li class="page-item">
-                  <a href="/cantantes/<%= paginas %>" class="page-link">Ultima página</a>
-                </li>
-              <% } %>
-            </ul>
-          </nav>
-        <% } %>
-      </div>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold">
+      Intérpretes
+    </h1>
+    <div class="d-flex align-items-center gap-3">
+      <a href="/cantantes/nuevo" class="btn btn-primary">
+        + Añadir intérprete
+      </a>
+      <span class="text-muted">
+        Página <%= current %> de <%= paginas %>
+      </span>
     </div>
   </div>
-  <div class="card-body centrar-texto">
-    <a href="/" class="btn btn-volver">
-      Volver
-    </a>
+  <div class="row g-4">
+    <% interpretes.forEach(interprete => { %>
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 shadow-sm border-0 hover-card">
+          <a href="/verCantante/<%= interprete._id %>">
+            <img src="<%= interprete.caratula %>" class="card-img-top" alt="<%= interprete.nombre %>" style="height: 320px; object-fit: contain; background-color: #111;">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title fw-bold">
+              <a href="/verCantante/<%= interprete._id %>" class="text-decoration-none.text-dark">
+                <%= interprete.nombre %>
+              </a>
+            </h5>
+            <p class="text-muted mb-2">
+              <%= interprete.nacionalidad || 'Nacionalidad desconocida' %>
+            </p>
+            <small class="text-muted">
+              <%= interprete.discos.length %> discos 
+              <%= interprete.totalCanciones %> canciones
+            </small>
+          </div>
+        </div>
+      </div>
+    <% }) %> 
   </div>
+  <!-- Paginación -->
+  <% if(paginas > 1) { %>
+    <nav class="mt-5">
+      <ul class="pagination justify-content-center">
+        <% 
+          const paginaActual = Number(current);
+          let inicio = paginaActual - 4;
+          let fin = paginaActual + 4;
+          if(inicio < 1) {
+            inicio = 1;
+            fin = Math.min(9, paginas);
+          }
+          if(fin > paginas) {
+            fin = paginas;
+            inicio = Math.max(1, paginas - 8);
+          }
+        %>
+        <% if(paginaActual > 1) { %>
+          <li class="page-item">
+            <a class="page-link" href="/cantantes/<%= paginaActual - 1 %>">
+              Anterior
+            </a>
+          </li>
+        <% } %>
+        <% for(let i = inicio; i <= fin; i++) { %>
+          <li class="page-item <%= i === paginaActual ? 'active' : '' %>">
+            <a class="page-link" href="/cantantes/<%= i %>">
+              <%= i %>
+            </a>
+          </li>
+        <% } %>
+        <% if(paginaActual < paginas) { %>
+          <li class="page-item">
+            <a class="page-link" href="/cantantes/<%= paginaActual + 1 %>">
+              Siguiente
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+  <% } %>
 </div>
+
 <% include partials/_footer %>
