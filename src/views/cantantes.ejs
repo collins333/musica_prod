@@ -6,9 +6,11 @@
       Intérpretes
     </h1>
     <div class="d-flex align-items-center gap-3">
-      <a href="/cantantes/nuevo" class="btn btn-primary">
-        + Añadir intérprete
-      </a>
+        <% if(user) { %>
+          <a href="/cantantes/nuevo" class="btn btn-primary">
+            + Añadir intérprete
+          </a>
+        <% } %>
       <span class="text-muted">
         Página <%= current %> de <%= paginas %>
       </span>

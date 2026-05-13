@@ -28,17 +28,19 @@
             </div>
           <% } %>
           <!-- Botones crud -->
-          <div class="d-flex flex-wrap gap-2 mt-3">
-            <a href="/editDisco/<%= disco._id %>" class="btn btn-success">
-              Editar disco
-            </a>
-            <form action="/deleteDisco/<%= disco._id %>?_method=DELETE" method="post">
-              <input type="hidden" name="_method" value="DELETE">
-              <button class="btn btn-danger delete" type="submit">
-                Eliminar disco
-              </button>
-            </form>
-          </div>
+          <% if(user) { %>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <a href="/editDisco/<%= disco._id %>" class="btn btn-success">
+                Editar disco
+              </a>
+              <form action="/deleteDisco/<%= disco._id %>?_method=DELETE" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-danger delete" type="submit">
+                  Eliminar disco
+                </button>
+              </form>
+            </div>
+          <% } %>
         </div>
       </div>
     </div>
@@ -89,17 +91,19 @@
                   <% } %>
                 </div>
                 <!-- Acciones -->
-                <div class="col-md-2 text-end">
-                  <a href="/editCancion/<%= cancion._id %>" class="btn btn-outline-success btn-sm mb-2">
-                    Editar
-                  </a>
-                  <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE" method="post">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button class="btn btn-outline-danger btn-sm delete" type="submit">
-                      Eliminar
-                    </button>
-                  </form>
-                </div>
+                <% if(user) { %>
+                  <div class="col-md-2 text-end">
+                    <a href="/editCancion/<%= cancion._id %>" class="btn btn-outline-success btn-sm mb-2">
+                      Editar
+                    </a>
+                    <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE" method="post">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button class="btn btn-outline-danger btn-sm delete" type="submit">
+                        Eliminar
+                      </button>
+                    </form>
+                  </div>
+                <% } %>
               </div>
             </div>
           </div>

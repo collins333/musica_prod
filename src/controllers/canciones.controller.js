@@ -54,18 +54,6 @@ exports.listarCanciones = async (req, res) => {
             }
         ]);
 
-
-            // .skip((porPagina * pagina) - porPagina)
-            // .limit(porPagina)
-            // .populate({
-            //     path: 'del_disco',
-            //     populate: {
-            //         path: 'interprete',
-            //         model: 'Interprete'
-            //     }
-            // })
-            // .sort({ del_disco: 1 });
-
         const cuenta = await Cancion.countDocuments();
 
         res.render('canciones', {
@@ -135,9 +123,6 @@ exports.crearCancion = async (req, res) => {
 
         await cancion.save();
 
-        //const disco = await Disco.findById(req.body.del_disco)
-        
-        // añadir canción al disco
         disco.canciones.push(cancion._id);
 
         await disco.save();

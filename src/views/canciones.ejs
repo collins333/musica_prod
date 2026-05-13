@@ -6,9 +6,11 @@
     🎵 Canciones
   </h1>
   <div class="d-flex align-items-center gap-3">
-    <a href="/canciones/nueva" class="btn btn-primary">
-      + Añadir canción
-    </a>
+    <% if(user) { %>
+      <a href="/canciones/nueva" class="btn btn-primary">
+        + Añadir canción
+      </a>
+    <% } %>
     <span class="text-muted">
       Página <%= current %> de <%= paginas %>
     </span>

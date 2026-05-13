@@ -6,9 +6,11 @@
       Discos
     </h1>
     <div class="d-flex align-items-center gap-3">
-      <a href="/discos/nuevo" class="btn btn-primary">
-        + Añadir disco
-      </a>
+      <% if(user) { %>
+        <a href="/discos/nuevo" class="btn btn-primary">
+          + Añadir disco
+        </a>
+      <% } %>
       <span class="text-muted">
         Página <%= current %> de <%= paginas %>
       </span>

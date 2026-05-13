@@ -25,17 +25,19 @@
             </div>
           <% } %>
           <!-- Botones crud -->
-          <div class="d-flex flex-wrap gap-2 mt-3">
-            <a href="/editCantante/<%= interprete._id %>" class="btn btn-success">
-              Editar intérprete
-            </a>
-            <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE" method="post">
-              <input type="hidden" name="_method" value="DELETE">
-              <button class="btn btn-danger delete" type="submit">
-                Eliminar intérprete
-              </button>
-            </form>
-          </div>
+          <% if(user) { %>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <a href="/editCantante/<%= interprete._id %>" class="btn btn-success">
+                Editar intérprete
+              </a>
+              <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-danger delete" type="submit">
+                  Eliminar intérprete
+                </button>
+              </form>
+            </div>
+          <% } %>
         </div>
       </div>
     </div>

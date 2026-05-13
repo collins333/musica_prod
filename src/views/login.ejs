@@ -1,0 +1,19 @@
+<h1>Login admin</h1>
+
+<% if(error) { %>
+    <div class="alert alert-danger">
+        <%= error %>
+    </div>
+<% } %>
+<form action="/login" method="post">
+    <input type="text" name="user" placeholder="Usuario">
+    <input type="password" name="password" placeholder="Contraseña">
+    <div class="mt-3">
+        <button type="submit">
+            Entrar
+        </button>
+        <a href="/cantantes/1" class="btn btn-outline-secondary">
+            Continuar como visitante
+        </a>
+    </div>
+</form>
