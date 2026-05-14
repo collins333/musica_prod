@@ -21,7 +21,6 @@ app.set('port', process.env.PORT || 4000)
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
-app.set('trust proxy', 1);
 
 // MIDDLEWARES
 app.use(morgan('dev'))
@@ -35,6 +34,7 @@ app.use(session({
     secure: false
   }
 }));
+app.set('trust proxy', 1);
 
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
@@ -49,8 +49,9 @@ app.use((req, res, next) => {
 });
 
 app.post('/login', (req, res) => {
-  console.log("LOGIN DIRECTO APP.JS");
-  res.send("ok");
+  console.log("LOGIN llegó al servidor");
+  console.log('body:', req.body);
+  res.send("ok login");
 });
 
 // RUTAS
