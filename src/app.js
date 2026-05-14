@@ -48,6 +48,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.post('/login', (req, res) => {
+  console.log("LOGIN DIRECTO APP.JS");
+  res.send("ok");
+});
+
 // RUTAS
 app.use('/', cantantesRoutes);
 app.use('/', discosRoutes);
