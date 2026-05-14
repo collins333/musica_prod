@@ -36,6 +36,7 @@ router.get('/login', (req, res) => {
 // });
 
 router.post('/login', (req, res) => {
+    console.log('POST LOGIN EJECUTADO');
     const { user, password } = req.body;
 
     console.log("USER:", user);
