@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 console.log("AUTH ROUTES LOADED");
 // mostrar login
 router.get('/login', (req, res) => {
+    console.log('GET LOGIN');
     res.render('login', {
         error: null,
         title: 'Login admin'
