@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 console.log("AUTH ROUTES LOADED");
 // mostrar login
 router.get('/login', (req, res) => {
