@@ -54,11 +54,11 @@ app.post('/login', (req, res) => {
   res.send("ok login");
 });
 
+app.use(authRoutes);
 // RUTAS
 app.use('/', cantantesRoutes);
 app.use('/', discosRoutes);
 app.use('/', cancionesRoutes);
-app.use(authRoutes);
 
 connectDB();
 
