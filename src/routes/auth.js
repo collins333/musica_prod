@@ -14,7 +14,9 @@ router.get('/login', (req, res) => {
 // procesar login
 router.post('/login', (req, res) => {
     const { user, password } = req.body;
-
+console.log("USER INPUT:", user);
+console.log("ENV USER:", process.env.ADMIN_USER);
+console.log("ENV PASS:", process.env.ADMIN_PASSWORD);
     if(user === process.env.ADMIN_USER) {
         bcrypt.compare(password, process.env.ADMIN_PASSWORD, (err, result) => {
             console.log(process.env.ADMIN_PASSWORD)

@@ -21,6 +21,8 @@ app.set('port', process.env.PORT || 4000)
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
 
+app.set('trust proxy', 1);
+
 // MIDDLEWARES
 app.use(morgan('dev'))
 app.use(express.urlencoded({extended: false}));
@@ -28,7 +30,10 @@ app.use(methodOverride('_method'));
 app.use(session({
   secret: 'musica_app_secret_key',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false
+  }
 }));
 
 app.use((req, res, next) => {
