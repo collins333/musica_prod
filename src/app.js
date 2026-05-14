@@ -1,11 +1,11 @@
 'use strict';
 
+require('dotenv').config()
 const path = require('path')
 const express = require('express')
 const morgan = require('morgan')
 const methodOverride = require('method-override');
 const session = require('express-session');
-
 const connectDB = require('./config/db-connection')
 
 const app = express()

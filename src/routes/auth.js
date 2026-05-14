@@ -1,10 +1,13 @@
 const express = require('express');
-const router = express.Router()
+const router = express.Router();
+
+const bcrypt = require('bcrypt');
 
 // mostrar login
 router.get('/login', (req, res) => {
     res.render('login', {
-        error: null
+        error: null,
+        title: 'Login admin'
     });
 });
 
@@ -12,15 +15,25 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
     const { user, password } = req.body;
 
-    if(user === 'admin' && password === '1234') {
-        req.session.user = user;
-        return res.redirect('/cantantes/1')
-    };
+    if(user === process.env.ADMIN_USER) {
+        bcrypt.compare(password, process.env.ADMIN_PASSWORD, (err, result) => {
+            console.log(process.env.ADMIN_PASSWORD)
+           if (result) {
+            req.session.user = user;
+            return res.redirect('/cantantes/1')
+           }
 
-    //res.redirect('/');
-    res.render('Login', {
-        error: 'Usuario o contraseña incorrectos'
-    });
+            res.render('login', {
+                error: 'Usuario o contraseña incorrectos',
+                title: 'Login admin'
+            });
+        });
+    } else {
+        res.render('login', {
+            error: 'Usuario o contraseña incorrectos',
+            title: 'Login admin'
+        });
+    };
 });
 
 // logout

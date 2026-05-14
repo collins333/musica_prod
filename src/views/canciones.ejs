@@ -30,7 +30,7 @@
             <div class="card-body">
               <h5 class="card-title mb-1">
                 <a href="/verCancion/<%= cancion._id %>" class="text-decoration-none text-light fw-bold">
-                  <%= cancion.tit_cancion %>
+                  <%- include('partials/cancionItem', { cancion }) %>
                 </a>
                 <% if(cancion.artista_pista) { %>
                   <span class="text muted">

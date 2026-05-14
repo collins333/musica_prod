@@ -152,3 +152,8 @@ img {
   color: #eee;
 }
 
+.parte-cancion {
+  font-style: italic;
+  margin-left: 20px;
+  color: #ddd;
+}
