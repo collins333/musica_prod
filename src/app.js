@@ -48,11 +48,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/login', (req, res) => {
-  console.log("LOGIN llegó al servidor");
-  console.log('body:', req.body);
-  res.send("ok login");
-});
+// app.post('/login', (req, res) => {
+//   console.log("LOGIN llegó al servidor");
+//   console.log('body:', req.body);
+//   res.send("ok login");
+// });
 
 app.use(authRoutes);
 // RUTAS
