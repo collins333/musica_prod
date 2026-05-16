@@ -43,22 +43,11 @@ app.use((req, res, next) => {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-  console.log(req.method, req.url);
-  next();
-});
-
-// app.post('/login', (req, res) => {
-//   console.log("LOGIN llegó al servidor");
-//   console.log('body:', req.body);
-//   res.send("ok login");
-// });
-
-app.use(authRoutes);
 // RUTAS
 app.use('/', cantantesRoutes);
 app.use('/', discosRoutes);
 app.use('/', cancionesRoutes);
+app.use(authRoutes);
 
 connectDB();
 
