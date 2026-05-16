@@ -70,7 +70,13 @@ router.get('/login', (req, res) => {
 // });
 
 router.post('/login', (req, res) => {
-    return res.send('POST LOGIN NUEVO FUNCIONANDO');
+    const {user, password} = req.body;
+
+    return res.send(`
+        USER INPUT: ${user}<br>
+        ENV USER: ${process.env.ADMIN_USER}<br>
+        ENV PASS LENGTH: ${process.env.ADMIN_PASSWORD.length}
+        `);
 })
 
 // logout
