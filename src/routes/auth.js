@@ -13,28 +13,28 @@ router.get('/login', (req, res) => {
 });
 
 // procesar login
-// router.post('/login', (req, res) => {
-//     const { user, password } = req.body;
+router.post('/login', (req, res) => {
+    const { user, password } = req.body;
 
-//     if(user === process.env.ADMIN_USER) {
-//         bcrypt.compare(password, process.env.ADMIN_PASSWORD, (err, result) => {
-//             if (result) {
-//             req.session.user = user;
-//             return res.redirect('/cantantes/1')
-//            }
+    if(user === process.env.ADMIN_USER) {
+        bcrypt.compare(password, process.env.ADMIN_PASSWORD, (err, result) => {
+            if (result) {
+            req.session.user = user;
+            return res.redirect('/cantantes/1')
+           }
 
-//             res.render('login', {
-//                 error: 'Usuario o contraseña incorrectos',
-//                 title: 'Login admin'
-//             });
-//         });
-//     } else {
-//         res.render('login', {
-//             error: 'Usuario o contraseña incorrectos',
-//             title: 'Login admin'
-//         });
-//     };
-// });
+            res.render('login', {
+                error: 'Usuario o contraseña incorrectos',
+                title: 'Login admin'
+            });
+        });
+    } else {
+        res.render('login', {
+            error: 'Usuario o contraseña incorrectos',
+            title: 'Login admin'
+        });
+    };
+});
 
 // router.post('/login', (req, res) => {
 //     console.log('POST LOGIN EJECUTADO');
@@ -69,15 +69,15 @@ router.get('/login', (req, res) => {
 //     }
 // });
 
-router.post('/login', (req, res) => {
-    const {user, password} = req.body;
+// router.post('/login', (req, res) => {
+//     const {user, password} = req.body;
 
-    return res.send(`
-        USER INPUT: ${user}<br>
-        ENV USER: ${process.env.ADMIN_USER}<br>
-        ENV PASS LENGTH: ${process.env.ADMIN_PASSWORD.length}
-        `);
-})
+//     return res.send(`
+//         USER INPUT: ${user}<br>
+//         ENV USER: ${process.env.ADMIN_USER}<br>
+//         ENV PASS LENGTH: ${process.env.ADMIN_PASSWORD.length}
+//         `);
+// })
 
 // logout
 router.get('/logout', (req, res) => {
