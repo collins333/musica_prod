@@ -189,7 +189,10 @@ exports.buscar = async (req, res) => {
 
         const canciones = await Cancion
             .find({
-                tit_cancion: { $regex: texto, $options: 'i'}
+                $or: [
+                    {tit_cancion: { $regex: texto, $options: 'i'}},
+                    {artista_pista: { $regex: texto, $options: 'i' }}
+                ]
             })
             .populate('del_disco')
             .sort({tit_cancion: 1});
@@ -199,7 +202,12 @@ exports.buscar = async (req, res) => {
                 title: 'buscador de cantantes, discos y canciones'
             });
         }
+        console.log("CANCIONES ENCONTRADAS:");
+        console.log(canciones.length);
 
+        canciones.forEach(c => {
+        console.log(c.tit_cancion, c.artista_pista);
+        });
         res.render('buscar', {
             title: 'buscador de cantantes, discos y canciones',
             query: texto,
