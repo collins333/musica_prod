@@ -69,27 +69,31 @@
                       <%- include('partials/cancionItem', { cancion }) %>
                     </a>
                     <% if(cancion.artista_pista) { %>
-                      <span class="text muted">
+                      <span class="text-muted">
                         - <em><%= cancion.artista_pista %></em>
                       </span>
                     <% } %>
                   </h5>
-                  <small class="text-muted">
-                    ⏱ <%= cancion.dur_cancion %>
-                  </small>
-                </div>
-                <!-- Reproductor / YouTube-->
-                <div class="col-md-4">
-                  <% if(disco.esAudioLocal) { %>
-                    <audio controls style="width: 100%;">
-                      <source src="<%= cancion.enlace %>" type="audio/mpeg">
-                    </audio>
-                  <% } else { %>
-                    <a href="<%= cancion.enlace %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-danger btn-sm">
-                      ▶ Ver / escuchar
-                    </a>
+                  <% if (cancion.dur_cancion) { %>
+                    <small class="text-muted">
+                      ⏱ <%= cancion.dur_cancion %>
+                    </small>
                   <% } %>
                 </div>
+                  <!-- Reproductor / YouTube-->
+                  <% if(cancion.enlace) { %>
+                  <div class="col-md-4">
+                    <% if(disco.esAudioLocal) { %>
+                      <audio controls style="width: 100%;">
+                        <source src="<%= cancion.enlace %>" type="audio/mpeg">
+                      </audio>
+                      <% } else { %>
+                        <a href="<%= cancion.enlace %>" target="_blank" rel="noopener noreferrer" class="btn btn-outline-danger btn-sm">
+                          ▶ Ver / escuchar
+                        </a>
+                        <% } %>
+                      </div>
+                <% } %>
                 <!-- Acciones -->
                 <% if(user) { %>
                   <div class="col-md-2 text-end">
@@ -119,14 +123,14 @@
   </div>
 </div>
 <script>
-  let botones = document.getElementsByClassName('delete')
-  for(let i=0; i<botones.length; i+=1) {
-    botones[i].addEventListener('click', (e) => {
-      let respuesta = confirm('Estás seguro de querer eliminar este disco?')
-      if(!respuesta){
-        e.preventDefault()
+  let botones = document.querySelectorAll('.delete');
+  for (const boton of botones) {  
+    boton.addEventListener('click', (e) => {
+      let respuesta = confirm('¿Estás seguro de querer eliminar esta canción?');
+      if(!respuesta) {
+        e.preventDefault();
       }
-    })
+    });
   }
 </script>
 

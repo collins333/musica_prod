@@ -202,12 +202,7 @@ exports.buscar = async (req, res) => {
                 title: 'buscador de cantantes, discos y canciones'
             });
         }
-        console.log("CANCIONES ENCONTRADAS:");
-        console.log(canciones.length);
-
-        canciones.forEach(c => {
-        console.log(c.tit_cancion, c.artista_pista);
-        });
+        
         res.render('buscar', {
             title: 'buscador de cantantes, discos y canciones',
             query: texto,

@@ -33,7 +33,7 @@
                   <%- include('partials/cancionItem', { cancion }) %>
                 </a>
                 <% if(cancion.artista_pista) { %>
-                  <span class="text muted">
+                  <span class="text-muted">
                     - <em><%= cancion.artista_pista %></em>
                   </span>
                 <% } %>
@@ -48,9 +48,11 @@
                   💿 <%= cancion.del_disco.titulo %>
                 </a>
               </p>
-              <small class="text-muted">
-                ⏱ <%= cancion.dur_cancion %>
-              </small>
+              <% if(cancion.dur_cancion) { %>
+                <small class="text-muted">
+                  ⏱ <%= cancion.dur_cancion %>
+                </small>
+              <% } %>
               <% if(cancion.enlace) { %>
                 <div class="mt-3">
                   <a href="<%= cancion.enlace %>" target="_blank" class="btn btn-sm btn-outline-primary">

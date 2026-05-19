@@ -89,14 +89,14 @@
   </div>
 </div>
 <script>
-  let botones = document.getElementsByClassName('delete')
-  for(let i=0; i<botones.length; i+=1) {
-    botones[i].addEventListener('click', (e) => {
-      let respuesta = confirm('Estás seguro de querer eliminar este cantante?')
-      if(!respuesta){
-        e.preventDefault()
+  let botones = document.querySelectorAll('.delete');
+  for (const boton of botones) {  
+    boton.addEventListener('click', (e) => {
+      let respuesta = confirm('¿Estás seguro de querer eliminar esta canción?');
+      if(!respuesta) {
+        e.preventDefault();
       }
-    })
+    });
   }
 </script>
 

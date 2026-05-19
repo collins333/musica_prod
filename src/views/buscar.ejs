@@ -75,14 +75,14 @@
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <strong class="text-warning">
-                <%= cancion.tit_cancion %>
+                🎶 <%= cancion.tit_cancion %>
               </strong>
-              <span class="text-light ms-2">
-                (<%= cancion.del_disco.titulo %>)
-              </span>
+              <div class="text-light ms-2">
+                💿(<%= cancion.del_disco.titulo %>)
+              </div>
               <% if(cancion.artista_pista) { %>
                 <div class="text-info small">
-                  <%= cancion.artista_pista %>
+                  🎤 <%= cancion.artista_pista %>
                 </div>
               <% } %>
             </div>
