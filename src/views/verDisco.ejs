@@ -6,7 +6,7 @@
     <div class="row g-0">
       <!-- Carátula -->
       <div class="col-lg-4 text-center p-4">
-        <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="img-fluid rounded shadow" style="max-height: 450px; object-fit: contain; background-color: #111;">
+        <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="img-fluid rounded shadow" style="max-height: 450px; object-fit: contain; background-color: #111;" onerror="this.onerror=null; this.src='/img/no-cover.jpg'">
       </div>
       <!-- Información -->
       <div class="col-lg-8">
@@ -15,8 +15,8 @@
             💿 <%= disco.titulo %>
           </h1>
           <h3 class="mb-3">
-            <a href="/verCantante/<%= disco.interprete._id %>" class="text-decoration-none">
-              <%=disco.interprete.nombre %>
+            <a href="/verCantante/<%= disco.interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="text-decoration-none">
+              <%=interprete.nombre %>
             </a>
           </h3>
           <p class="text-muted mb-3">
@@ -30,7 +30,7 @@
           <!-- Botones crud -->
           <% if(user) { %>
             <div class="d-flex flex-wrap gap-2 mt-3">
-              <a href="/editDisco/<%= disco._id %>" class="btn btn-success">
+              <a href="/editDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-success">
                 Editar disco
               </a>
               <form action="/deleteDisco/<%= disco._id %>?_method=DELETE" method="post">
@@ -51,7 +51,7 @@
       🎵 Canciones del disco
     </h2>
     <div class="row g-4">
-      <% disco.canciones.forEach((cancion, index) => { %>
+      <% canciones.forEach((cancion, index) => { %>
         <div class="col-12">
           <div class="card shadow-sm border-0">
             <div class="card-body">
@@ -59,13 +59,13 @@
                 <!-- Número -->
                 <div class="col-md-1 text-center">
                   <span class="fs-4 fw-bold text-muted">
-                    <%= index + 1 %>
+                    <%= ((paginaCanciones - 1) * porPagina) + index + 1 %>
                   </span>
                 </div>
                 <!-- Info -->
                 <div class="col-md-5">
                   <h5 class="mb-1">
-                    <a href="/verCancion/<%= cancion._id %>" class="text-decoration-none">
+                    <a href="/verCancion/<%= cancion._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="text-decoration-none">
                       <%- include('partials/cancionItem', { cancion }) %>
                     </a>
                     <% if(cancion.artista_pista) { %>
@@ -114,11 +114,67 @@
         </div>
       <% }) %>
     </div>
+    <!-- Paginación canciones -->
+    <% if(paginasCanciones > 1) { %> 
+      <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+          <% if(paginaCanciones > 1) { %>
+            <li class="page-item">
+              <a href="/verDisco/<%= disco._id %>?paginaCanciones=<%= paginaCanciones - 1 %>" class="page-link">
+                Anterior
+              </a>
+            </li>  
+          <% } else { %>
+            <li>
+              <button class="btn btn-sm btn-secondary me-2" disabled>
+                Anterior
+              </button>
+            </li>  
+          <% } %>
+          <%
+            const paginaActual = Number(paginaCanciones);
+            let inicio = paginaActual - 4;
+            let fin = paginaActual + 4;
+            if(inicio < 1) {
+              inicio = 1;
+              fin = Math.min(9, paginasCanciones);
+            }
+            if(fin > paginasCanciones) {
+              fin = paginasCanciones;
+              inicio = Math.max(1, paginasCanciones - 8)
+            }
+          %>
+          <% for(let i=inicio; i<=fin; i++) { %>
+            <li class="page-item <%= i === paginaActual ? 'active' : '' %>">
+              <a href="/verDisco/<%= disco._id %>?paginaCanciones=<%= i %>" class="page-link">
+                <%= i %>
+              </a>
+            </li>
+          <% } %>
+          <% if(paginaCanciones < paginasCanciones) { %>
+            <li class="page-item">
+              <a href="/verDisco/<%= disco._id %>?paginaCanciones=<%= paginaCanciones + 1 %>" class="page-link">
+                Siguiente
+              </a>
+            </li>
+          <% } else { %>
+             <li>
+              <button class="btn btn-sm btn-secondary me-2" disabled>
+                Siguiente
+              </button>
+            </li> 
+          <% } %>
+        </ul>
+      </nav>          
+    <% } %>
   </div>
   <!-- Volver -->
   <div class="text-center mb-5">
-    <a href="/discos/1" class="btn btn-volver">
+    <a href="/discos?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-volver">
       Volver a discos
+    </a>
+    <a href="/cantantes?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-volver">
+      Volver a intérprete
     </a>
   </div>
 </div>

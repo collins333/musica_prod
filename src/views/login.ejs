@@ -1,47 +1,46 @@
 <% include partials/_header %>
 
 <div class="container">
-<div class="row justify-content-center">
-<div class="col-lg-8">
-<div class="card shadow border-0 mt-4">
-    <div class="card-header cabecera">
-        <h1 class="mb-0">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow border-0 mt-4">
+        <div class="card-header cabecera">
+          <h1 class="mb-0">
             Login admin
-        </h1>
-    </div>
-    <% if(error) { %>
-        <div class="alert alert-danger">
+          </h1>
+        </div>
+        <% if(error) { %>
+          <div class="alert alert-danger">
             <%= error %>
-        </div>
-    <% } %>
+          </div>
+        <% } %>
         <div class="card-body">
-            <form action="/login" method="POST" class="w-50">
-                <div class="form-group mb-3">
-                    <label for="user">
-                        <strong>Usuario</strong>
-                    <input type="text" name="user" class="form-control">
-                    </label>
-                </div>
-                <div class="form-group mb-3">
-                    <label for="password">
-                        <strong>Contraseña</strong>
-                    </label>
-                    <input type="password" name="password" class="form-control">
-                </div>
-                <div class="d-flex flex-wrap gap-2 mt-3">
-                    <button type="submit" class="btn btn-primary">
-                        Entrar
-                    </button>
-                    <a href="/cantantes/1" class="btn btn-outline-warning">
-                        Continuar como visitante
-                    </a>
-                </div>
-            </form>
+          <form action="/login" method="POST" class="w-50">
+            <div class="form-group mb-3">
+              <label for="user">
+                <strong>Usuario</strong>
+                <input type="text" name="user" class="form-control">
+              </label>
+            </div>
+            <div class="form-group mb-3">
+              <label for="password">
+                <strong>Contraseña</strong>
+              </label>
+              <input type="password" name="password" class="form-control">
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+              <button type="submit" class="btn btn-primary">
+                Entrar
+              </button>
+              <a href="/cantantes" class="btn btn-outline-warning">
+                Continuar como visitante
+              </a>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
-</div>
-</div>
-</div>
+  </div>
 </div>
 
 <% include partials/_footer %>

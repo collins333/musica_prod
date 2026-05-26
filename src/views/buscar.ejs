@@ -55,7 +55,7 @@
                   <%= disco.titulo %>
                 </a>
               </h5>
-              <p class="text-light mb-8">
+              <p class="text-light mb-3">
                 <%= disco.anyo %>
               </p>
             </div>
@@ -78,7 +78,10 @@
                 🎶 <%= cancion.tit_cancion %>
               </strong>
               <div class="text-light ms-2">
-                💿(<%= cancion.del_disco.titulo %>)
+                💿<%= cancion.del_disco.titulo %>
+              </div>
+              <div class="text-info">
+                🎤 <%= cancion.del_interprete.nombre %>
               </div>
               <% if(cancion.artista_pista) { %>
                 <div class="text-info small">

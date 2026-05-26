@@ -1,19 +1,37 @@
-'use strict'
+"use strict";
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const DiscoSchema = new Schema({
-  titulo: String,
+  titulo: {
+    type: String,
+    required: true,
+    trim: true,
+    index: true,
+  },
   caratula: String,
-  anyo: Number,
-  interprete: {type: Schema.Types.ObjectId, ref: "Interprete"},
+  anyo: {
+    type: Number,
+    required: true,
+    trim: true,
+  },
+  interprete: {
+    type: Schema.Types.ObjectId,
+    ref: "Interprete",
+    index: true,
+  },
   info: String,
-  canciones: [{type: Schema.Types.ObjectId, ref: "Cancion"}],
+  canciones: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Cancion",
+    },
+  ],
   esAudioLocal: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-module.exports = mongoose.model('Disco', DiscoSchema);
+module.exports = mongoose.model("Disco", DiscoSchema);

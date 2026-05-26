@@ -1,12 +1,16 @@
+
 <% include partials/_header %>
+
+<% const disco = cancion.del_disco || {}; %>
+<% const interprete = disco.interprete || {}; %>
 
 <div class="container">
   <div class="card shadow-lg border-0 mb-4">
     <div class="row g-0">
       <!-- Portada -->
       <div class="col-md-4 text-center p-4">
-        <a href="/verDisco/<%= cancion.del_disco._id %>">
-          <img src="<%= cancion.del_disco.caratula %>" class="img-fluid rounded shadow" style="max-height: 400px; object-fit: contain; background-color: #111;" alt="<%= cancion.del_disco.titulo %>">
+        <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>&paginaCanciones=<%= paginaCanciones %>">
+          <img src="<%= disco.caratula %>" class="img-fluid rounded shadow" style="max-height: 400px; object-fit: contain; background-color: #111;" alt="<%= disco.titulo %>" onerror="this.onerror=null; this.src='/img/no-cover.jpg'">
         </a>
       </div>
       <!-- Info -->
@@ -23,13 +27,13 @@
             </h3>
           <% } %>
           <h4 class="mb-3">
-            <a href="/verCantante/<%= cancion.del_disco.interprete._id %>" class="text-decoration-none">
-              <%= cancion.del_disco.interprete.nombre %>              
+            <a href="/verCantante/<%= interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>&paginaDiscos=<%= paginaDiscos %>" class="text-decoration-none">
+              <%= interprete.nombre %>              
             </a>
           </h4>
           <p class="mb-2">
-            💿 <a href="/verDisco/<%= cancion.del_disco._id %>" class="text-decoration-none">
-              <%= cancion.del_disco.titulo %>
+            💿 <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>&paginaCanciones=<%= paginaCanciones %>" class="text-decoration-none">
+              <%= disco.titulo %>
             </a>
           </p>
           <% if (cancion.dur_cancion) { %>
@@ -39,7 +43,7 @@
           <% } %>
           <!-- Reproductor -->
           <% if (cancion.enlace) { %>
-            <% if(cancion.del_disco.esAudioLocal) { %>
+            <% if(disco.esAudioLocal) { %>
               <div class="mb-4">
                 <audio controls style="width: 100%;">
                   <source src="<%= cancion.enlace %>" type="audio/mpeg">
@@ -56,10 +60,10 @@
           <!-- Botones crud -->
           <% if(user) { %>
             <div class="d-flex gap-2 flex-wrap">
-              <a href="/editCancion/<%= cancion._id %>" class="btn btn-success">
+              <a href="/editCancion/<%= cancion._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-success">
                 Editar
               </a>
-              <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE" method="post">
+              <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE&<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <button class="btn btn-danger delete" type="submit">
                   Eliminar
@@ -73,8 +77,14 @@
   </div>
   <!-- Volver -->
   <div class="text-center mb-5">
-    <a href="/canciones/1" class="btn btn-volver">
+    <a href="/canciones?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-volver">
       Volver a canciones
+    </a>
+    <a href="/verDisco/<%= cancion.del_disco._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>&paginaCanciones=<%= paginaCanciones %>" class="btn btn-volver">
+      Volver al disco
+    </a>
+    <a href="/verCantante/<%= cancion.del_disco.interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>&paginaDiscos=<%= paginaDiscos %>" class="btn btn-volver">
+      Volver al intérprete
     </a>
   </div>
 </div>

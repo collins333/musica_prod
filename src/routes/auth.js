@@ -1,44 +1,44 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const bcrypt = require('bcryptjs');
+const bcrypt = require("bcryptjs");
 
 // mostrar login
-router.get('/login', (req, res) => {
-    res.render('login', {
-        error: null,
-        title: 'Login admin'
-    });
+router.get("/login", (req, res) => {
+  res.render("login", {
+    error: null,
+    title: "Login admin",
+  });
 });
 
 // procesar login
-router.post('/login', (req, res) => {
-    const { user, password } = req.body;
+router.post("/login", (req, res) => {
+  const { user, password } = req.body;
 
-    if(user === process.env.ADMIN_USER) {
-        bcrypt.compare(password, process.env.ADMIN_PASSWORD, (err, result) => {
-            if (result) {
-            req.session.user = user;
-            return res.redirect('/cantantes/1')
-           }
+  if (user === process.env.ADMIN_USER) {
+    bcrypt.compare(password, process.env.ADMIN_PASSWORD, (err, result) => {
+      if (result) {
+        req.session.user = user;
+        return res.redirect("/cantantes");
+      }
 
-            res.render('login', {
-                error: 'Usuario o contraseña incorrectos',
-                title: 'Login admin'
-            });
-        });
-    } else {
-        res.render('login', {
-            error: 'Usuario o contraseña incorrectos',
-            title: 'Login admin'
-        });
-    };
+      res.render("login", {
+        error: "Usuario o contraseña incorrectos",
+        title: "Login admin",
+      });
+    });
+  } else {
+    res.render("login", {
+      error: "Usuario o contraseña incorrectos",
+      title: "Login admin",
+    });
+  }
 });
 
 // logout
-router.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.redirect('/login');
+router.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.redirect("/login");
 });
 
 module.exports = router;
