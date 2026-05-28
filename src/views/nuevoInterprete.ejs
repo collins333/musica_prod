@@ -39,7 +39,7 @@
             </div>
             <!-- Botones -->
             <div class="d-flex justify-content-between mt-4">
-              <a href="/cantantes" class="btn btn-volver"> ← Volver </a>
+              <a href="/cantantes?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-volver"> ← Volver </a>
               <button class="btn btn-success">Guardar intérprete</button>
             </div>
           </form>

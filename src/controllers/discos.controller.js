@@ -8,7 +8,7 @@ const Interprete = require("../model/Interprete");
 exports.listarDiscos = async (req, res) => {
   try {
     const porPagina = 5;
-    const pagina = parseInt(req.query.pagina) || 1;
+    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
 
     const letra = req.query.letra;
     let filtro = {};
@@ -22,7 +22,7 @@ exports.listarDiscos = async (req, res) => {
 
     const interpretes = await Interprete.find(filtro)
       .sort({ nombre: 1 })
-      .skip((pagina - 1) * porPagina)
+      .skip((paginaCantantes - 1) * porPagina)
       .limit(porPagina)
       .lean();
 
@@ -65,7 +65,7 @@ exports.listarDiscos = async (req, res) => {
     res.render("discos", {
       title: "índice de discos",
       interpretesConDiscos,
-      pagina,
+      paginaCantantes,
       paginas: Math.ceil(totalInterpretes / porPagina),
       letra: letra || null,
       letrasExistentes: letrasExistentes.map((l) => l._id),
@@ -81,10 +81,12 @@ exports.verDisco = async (req, res) => {
     const id = req.params.id;
 
     const porPagina = 6;
+
+    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
+    const paginaDiscos = parseInt(req.query.paginaDiscos) || 1;
     const paginaCanciones = parseInt(req.query.paginaCanciones) || 1;
 
     const letra = req.query.letra || null;
-    const pagina = req.query.pagina || 1;
 
     const disco = await Disco.findById(id).lean();
 
@@ -105,9 +107,10 @@ exports.verDisco = async (req, res) => {
       disco,
       interprete,
       canciones,
-      pagina,
-      letra,
+      paginaCantantes,
+      paginaDiscos,
       paginaCanciones,
+      letra,
       paginasCanciones: Math.ceil(totalCanciones / porPagina),
       porPagina,
     });
@@ -118,11 +121,16 @@ exports.verDisco = async (req, res) => {
 
 // IR FORMULARIO NUEVO DISCO
 exports.formNuevoDisco = async (req, res) => {
+  const letra = req.query.letra || null;
+  const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
+
   const interpretes = await Interprete.find().sort({ nombre: 1 }).lean();
 
   res.render("nuevoDisco", {
     title: "Añadir disco",
     interpretes,
+    letra,
+    paginaCantantes
   });
 };
 
@@ -258,27 +266,7 @@ exports.eliminarDisco = async (req, res) => {
 
     const disco = await Disco.findById(id);
 
-    const interprete = await Interprete.findById(disco.interprete);
-
-    const letra = interprete.nombre[0].toUpperCase();
-
-    const porPagina = 5;
-
-    const interpretesLetra = await Interprete.find({
-      nombre: {
-        $regex: "^" + letra,
-        $options: "i",
-      },
-    })
-      .sort({ nombre: 1 })
-      .lean();
-
-    // cuántos intérpretes hay antes de este
-    const posicion = interpretesLetra.findIndex(
-      (i) => i._id.toString() === interprete._id.toString(),
-    );
-
-    const pagina = Math.ceil((posicion + 1) / porPagina);
+    const interpreteId = disco.interprete;
 
     // borrar canciones relacionadas
     await Cancion.deleteMany({
@@ -286,14 +274,15 @@ exports.eliminarDisco = async (req, res) => {
     });
 
     // quitar disco del interprete
-    await Interprete.findByIdAndUpdate(disco.interprete, {
-      $pull: { discos: id },
+    await Interprete.findByIdAndUpdate(interpreteId, {
+      $pull: { discos: id }
     });
 
     // borrar disco
     await Disco.findByIdAndDelete(id);
 
-    res.redirect(`/discos?letra=${letra}&pagina=${pagina}`);
+    res.redirect(`/verCantante/${interpreteId}`);
+
   } catch (err) {
     console.error("Error:", err);
   }

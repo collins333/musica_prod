@@ -9,7 +9,7 @@ const Interprete = require("../model/Interprete");
 exports.listarCanciones = async (req, res) => {
   try {
     const porPagina = 2;
-    const pagina = parseInt(req.query.pagina) || 1;
+    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
     const letra = req.query.letra;
 
     let filtro = {};
@@ -24,7 +24,7 @@ exports.listarCanciones = async (req, res) => {
     // intérpretes paginados
     const interpretes = await Interprete.find(filtro)
       .sort({ nombre: 1 })
-      .skip((pagina - 1) * porPagina)
+      .skip((paginaCantantes - 1) * porPagina)
       .limit(porPagina)
       .lean();
 
@@ -82,7 +82,7 @@ exports.listarCanciones = async (req, res) => {
     res.render("canciones", {
       title: "índice de canciones",
       interpretesConDiscos,
-      pagina,
+      paginaCantantes,
       paginas: Math.ceil(totalInterpretes / porPagina),
       letra: letra || null,
       letrasExistentes: letrasExistentes.map((l) => l._id),
@@ -99,9 +99,10 @@ exports.verCancion = async (req, res) => {
 
     // contexto navegación
     const letra = req.query.letra || null;
-    const pagina = parseInt(req.query.pagina) || 1;
 
+    
     // paginaciones internas
+    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
     const paginaDiscos = parseInt(req.query.paginaDiscos) || 1;
     const paginaCanciones = parseInt(req.query.paginaCanciones) || 1;
 
@@ -119,7 +120,7 @@ exports.verCancion = async (req, res) => {
       title: "información de la canción",
       cancion,
       letra,
-      pagina,
+      paginaCantantes,
       paginaDiscos,
       paginaCanciones
     });
@@ -132,8 +133,8 @@ exports.verCancion = async (req, res) => {
 // IR A FORMULARIO CANCION NUEVA
 exports.formNuevaCancion = async (req, res) => {
   try {
-    // const letra = req.query.letra || null;
-    // const pagina = parseInt(req.query.pagina) || 1;
+    const letra = req.query.letra || null;
+    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
 
     const discos = await Disco.find()
       .populate("interprete")
@@ -143,9 +144,10 @@ exports.formNuevaCancion = async (req, res) => {
     res.render("nuevaCancion", {
       title: "Añadir canción",
       discos,
-      // letra,
-      // pagina,
+      letra,
+      paginaCantantes,
     });
+
   } catch (err) {
     console.error("Error:", err);
   }
@@ -239,9 +241,6 @@ exports.editarCancion = async (req, res) => {
     // buscar nuevo disco
     const nuevoDisco = await Disco.findById(nuevoDiscoId);
 
-    // actualizar intérprete automáticamente
-    //req.body.del_interprete = nuevoDisco.interprete;
-
     // actualizar canción
     await Cancion.findByIdAndUpdate(id, req.body);
 
@@ -280,7 +279,7 @@ exports.editarCancion = async (req, res) => {
 
     const pagina = Math.ceil((posicion + 1) / porPagina);
 
-    res.redirect(`/canciones?letra=${letra}&pagina=${pagina}`);
+    res.redirect(`/canciones?letra=${letra}&paginaCantantes=${paginaCantantes}`);
   } catch (err) {
     console.error("Error:", err);
   }
@@ -291,34 +290,14 @@ exports.eliminarCancion = async (req, res) => {
   try {
     const id = req.params.id;
 
+    const letra = req.query.letra || null;
+
+    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
+    const paginaDiscos = parseInt(req.query.paginaDiscos) || 1;
+    const paginaCanciones = parseInt(req.query.paginaCanciones) || 1;
+
     // buscar canción
     const cancion = await Cancion.findById(id);
-
-    // buscar disco
-    const disco = await Disco.findById(cancion.del_disco);
-
-    // buscar intérprete
-    const interprete = await Interprete.findById(disco.interprete);
-
-    const letra = interprete.nombre[0].toUpperCase();
-
-    const porPagina = 2;
-
-    // intérpretes de esa letra
-    const interpretesLetra = await Interprete.find({
-      nombre: {
-        $regex: "^" + letra,
-        $options: "i",
-      },
-    })
-      .sort({ nombre: 1 })
-      .lean();
-
-    const posicion = interpretesLetra.findIndex(
-      (i) => i._id.toString() === interprete._id.toString(),
-    );
-
-    const pagina = Math.ceil((posicion + 1) / porPagina);
 
     // quitar referencia del disco
     await Disco.findByIdAndUpdate(cancion.del_disco, {
@@ -328,7 +307,8 @@ exports.eliminarCancion = async (req, res) => {
     // borrar y eliminar canción
     await Cancion.findByIdAndDelete(id);
 
-    res.redirect(`/canciones?letra=${letra}&pagina=${pagina}`);
+    res.redirect(`/verDisco/${cancion.del_disco}?letra=${letra}&paginaCantantes=${paginaCantantes}&paginaDiscos=${paginaDiscos}&paginaCanciones=${paginaCanciones}`);
+    
   } catch (err) {
     console.error("Error:", err);
   }

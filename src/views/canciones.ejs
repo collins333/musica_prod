@@ -1,97 +1,42 @@
 <% include partials/_header %>
 
 <div class="container">
-  <div class="mb-4 text-center">
-    <a href="/canciones" class="btn btn-sm <%= !letra ? 'btn-warning' : 'btn-outline-light' %> m-1">
-      Todos
-    </a>
-    <% for(let i=65; i<=90; i++) { %>
-      <%
-      const l = String.fromCharCode(i);
-      const existe = letrasExistentes.includes(l);
-      %>
-      <% if(existe) { %>
-        <a href="/canciones?letra=<%= l %>" class="btn btn-sm <%= letra && letra.toUpperCase() === l ? 'btn-warning' : 'btn-outline-light' %> m-1">
-          <%= l %>
-        </a>  
-      <% } else { %>
-        <button class="btn btn-sm btn-secondary m-1" disabled>
-          <%= l %>
-        </button>  
-      <% } %>   
-    <% } %>
-  </div>
+  <!-- Barra A-Z -->
+  <%- include('partials/_barraAZ', {
+    letrasExistentes,
+    letra,
+    rutaBase: '/canciones'
+  }) %>
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold">
       🎵 Canciones
     </h1>
     <div class="d-flex align-items-center gap-3">
       <% if(user) { %>
-        <a href="/canciones/nueva" class="btn btn-primary">
+        <a href="/canciones/nueva?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-primary">
           + Añadir canción
         </a>
       <% } %>
       <span class="text-muted">
-        Página <%= pagina %> de <%= paginas %>
+        Página <%= paginaCantantes %> de <%= paginas %>
       </span>
     </div>
   </div>
   <% interpretesConDiscos.forEach(grupo => { %>
-    <%- include('partials/_grupoCanciones', { grupo }) %>
+    <%- include('partials/_grupoCanciones', {
+       grupo,
+       letra,
+       paginaCantantes
+    }) %>
   <% }) %>
   <!-- Paginación -->
-  <% if(paginas > 1) { %>
-    <nav class="mt-5">
-      <ul class="pagination justify-content-center">
-        <% if(pagina > 1) { %>
-          <li class="page-item">
-            <a class="page-link" href="/canciones?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina - 1 %>">
-              Anterior
-            </a>
-          </li>
-        <% } else { %>
-          <li>
-            <button class="btn btn-sm btn-secondary me-2" disabled>
-              Anterior
-            </button>
-          </li>  
-        <% } %>
-        <% 
-        const paginaActual = Number(pagina);
-        let inicio = paginaActual - 4;
-        let fin = paginaActual + 4;
-        if(inicio < 1) {
-          inicio = 1;
-          fin = Math.min(9, paginas);
-        }
-        if(fin > paginas) {
-          fin = paginas;
-          inicio = Math.max(1, paginas - 8);
-        }
-        %>
-        <% for(let i=inicio; i<=fin; i++) { %>
-          <li class="page-item <%= i === paginaActual ? 'active' : '' %>">
-            <a class="page-link" href="/canciones?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= i %>">
-              <%= i %>
-            </a>
-          </li>
-        <% } %>
-        <% if(paginaActual < paginas) { %>
-          <li class="page-item">
-            <a class="page-link" href="/canciones?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina + 1 %>">
-              Siguiente
-            </a>
-          </li>
-        <% } else { %>
-          <li>
-            <button class="btn btn-sm btn-secondary me-2" disabled>
-              Siguiente
-            </button>
-          </li>  
-        <% } %>
-      </ul>
-    </nav>
-  <% } %> 
+  <%- include('partials/_paginacion', {
+    letra,
+    pagina: paginaCantantes,
+    paginas,
+    rutaBase: '/canciones',
+    queryPagina: 'paginaCantantes'
+  }) %> 
 </div>
     
 <% include partials/_footer %>

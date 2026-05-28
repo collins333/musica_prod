@@ -2,26 +2,11 @@
 
 <div class="container">
   <!-- Barra A-Z -->
-  <div class="mb-4 text-center">
-    <a href="/cantantes" class="btn btn-sm <%= !letra ? 'btn-warning' : 'btn-outline-light' %> m-1">
-      Todos
-    </a>
-    <% for(let i = 65; i <= 90; i++) { %>
-      <%
-       const l = String.fromCharCode(i); 
-       const existe = letrasExistentes.includes(l);
-      %>
-      <% if(existe) { %>
-        <a href="/cantantes?letra=<%= l %>" class="btn btn-sm <%= letra && letra.toUpperCase() === l ? `btn-warning` : `btn-outline-light`%> m-1">
-          <%= l %>
-        </a>
-      <% } else { %>
-        <button class="btn btn-sm btn-secondary m-1" disabled>
-          <%= l %>
-        </button>
-      <% } %>
-    <% } %>
-  </div>
+  <%- include('partials/_barraAZ', {
+    letrasExistentes,
+    letra,
+    rutaBase: '/cantantes'
+  }) %>
   <!-- Encabezado -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold">
@@ -29,12 +14,12 @@
     </h1>
     <div class="d-flex align-items-center gap-3">
         <% if(user) { %>
-          <a href="/cantantes/nuevo" class="btn btn-primary">
+          <a href="/cantantes/nuevo?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-primary">
             Añadir intérprete
           </a>
         <% } %>
       <span class="text-muted">
-        Página <%= pagina %> de <%= paginas %>
+        Página <%= paginaCantantes %> de <%= paginas %>
       </span>
     </div>
   </div>
@@ -43,11 +28,11 @@
     <% interpretes.forEach(interprete => { %>
       <div class="col-6 col-md-3 col-lg-2">
         <div class="card-musica text-center h-100">
-          <a href="/verCantante/<%= interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>">
+          <a href="/verCantante/<%= interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>">
             <img src="<%= interprete.caratula %>" alt="<%= interprete.nombre %>" class="img-fluid rounded shadow-sm mb-2" style="height: 320px; object-fit: contain; background-color: #111;" onerror="this.onerror=null; this.src='/img/no-image.png'">
           </a>
           <h6 class="text-light">
-            <a href="/verCantante/<%= interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="text-decoration-none text-light">
+            <a href="/verCantante/<%= interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="text-decoration-none text-light">
               <%= interprete.nombre %>
             </a>
           </h6>
@@ -56,58 +41,13 @@
     <% }) %>
   </div>
   <!-- Paginación -->
-  <% if(paginas > 1) { %>
-    <nav class="mt-5">
-      <ul class="pagination justify-content-center">
-        <% if(pagina > 1) { %>
-          <li class="page-item">
-            <a class="page-link" href="/cantantes?pagina=<%= pagina - 1 %>">
-              Anterior
-            </a>
-          </li>
-        <% } else { %>
-          <li>
-            <button class="btn btn-sm btn-secondary me-2" disabled>
-              Anterior
-            </button>
-          </li>
-        <% } %>
-        <%
-         const paginaActual = Number(pagina);
-         let inicio = paginaActual - 4;
-         let fin = paginaActual + 4;
-         if(inicio < 1) {
-          inicio = 1;
-          fin = Math.min(9, paginas);
-         }
-         if(fin > paginas) {
-          fin = paginas;
-          inicio = Math.max(1, paginas - 8);
-         }
-        %>
-        <% for(let i=inicio; i <= fin; i++) { %>
-          <li class="page-item <%= i === paginaActual ? 'active' : '' %>">
-            <a class="page-link" href="/cantantes<%= letra ? `?letra=${letra}&pagina=${i}` : `?pagina=${i}` %>">
-              <%= i %>
-            </a>
-          </li>
-        <% } %>
-        <% if(pagina < paginas) { %>
-          <li class="page-item">
-            <a class="page-link" href="/cantantes<%= letra ? `?letra=${letra}&pagina=${pagina + 1}` : `?pagina=${pagina + 1}` %>">
-              Siguiente
-            </a>
-          </li>
-        <% } else { %>
-          <li>
-            <button class="btn btn-sm btn-secondary me-2" disabled>
-              Siguiente
-            </button>
-          </li>
-        <% } %>
-      </ul>
-    </nav>
-  <% } %>
+  <%- include('partials/_paginacion', {
+    letra,
+    pagina: paginaCantantes,
+    paginas,
+    rutaBase: '/cantantes',
+    queryPagina: 'paginaCantantes'
+  }) %>
 </div>
 
 <% include partials/_footer %>

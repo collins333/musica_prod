@@ -14,7 +14,7 @@ exports.home = (req, res) => {
 exports.listarCantantes = async (req, res) => {
   try {
     const porPagina = 10;
-    const pagina = parseInt(req.query.pagina) || 1;
+    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
     const letra = req.query.letra;
 
     let filtro = {};
@@ -28,7 +28,7 @@ exports.listarCantantes = async (req, res) => {
 
     const interpretes = await Interprete.find(filtro)
       .sort({ nombre: 1 })
-      .skip(porPagina * pagina - porPagina)
+      .skip(porPagina * paginaCantantes - porPagina)
       .limit(porPagina)
       .lean();
 
@@ -56,7 +56,7 @@ exports.listarCantantes = async (req, res) => {
 
     res.render("cantantes", {
       interpretes,
-      pagina,
+      paginaCantantes,
       paginas: Math.ceil(cuenta / porPagina),
       letra: letra || null,
       title: "índice de cantantes",
@@ -75,7 +75,7 @@ exports.verCantante = async (req, res) => {
     const porPagina = 6;
     const paginaDiscos = parseInt(req.query.paginaDiscos) || 1;
 
-    const pagina = req.query.pagina || 1;
+    const paginaCantantes = req.query.paginaCantantes || 1;
     const letra = req.query.letra || null;
 
     const interprete = await Interprete.findById(id).lean();
@@ -97,7 +97,7 @@ exports.verCantante = async (req, res) => {
       paginasDiscos: Math.ceil(totalDiscos / porPagina),
       title: "toda la información del cantante",
       totalDiscos,
-      pagina,
+      paginaCantantes,
       letra,
     });
   } catch (err) {
@@ -107,8 +107,13 @@ exports.verCantante = async (req, res) => {
 
 // IR FORMULARIO CREAR CANTANTE
 exports.formNuevoInterprete = (req, res) => {
+  const letra = req.query.letra || null;
+  const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
+
   res.render("nuevoInterprete", {
     title: "Añadir cantante",
+    letra,
+    paginaCantantes
   });
 };
 
@@ -184,24 +189,6 @@ exports.eliminarInterprete = async (req, res) => {
 
     const letra = interprete.nombre[0].toUpperCase();
 
-    const porPagina = 10;
-
-    const interpretesLetra = await Interprete.find({
-      nombre: {
-        $regex: "^" + letra,
-        $options: "i",
-      },
-    })
-      .sort({ nombre: 1 })
-      .lean();
-
-    // cuántos intérpretes hay antes de este
-    const posicion = interpretesLetra.findIndex(
-      (i) => i._id.toString() === interprete._id.toString(),
-    );
-
-    const pagina = Math.ceil((posicion + 1) / porPagina);
-
     // buscar discos del interprete
     const discos = await Disco.find({
       interprete: id,
@@ -223,11 +210,10 @@ exports.eliminarInterprete = async (req, res) => {
     // borrar intérprete
     await Interprete.findByIdAndDelete(id);
 
-    res.redirect(`/cantantes?letra=${letra}&pagina=${pagina}`);
+    res.redirect(`/cantantes?letra=${letra}`);
+
   } catch (err) {
     console.error("Error:", err);
-
-    res.status(500).send("Error eliminando intérprete");
   }
 };
 
@@ -270,10 +256,12 @@ exports.buscar = async (req, res) => {
         },
       ],
     })
-      .populate("del_disco", "titulo caratula")
-      .populate("del_interprete", "nombre")
-      .sort({ tit_cancion: 1 })
-      .lean();
+      .populate({
+        path: "del_disco",populate: {
+          path: "interprete",
+          model: "Interprete",       
+        },
+      });
 
     if (
       interpretes.length === 0 &&

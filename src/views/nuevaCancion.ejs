@@ -10,7 +10,7 @@
           </h3>
         </div>
         <div class="card-body">
-          <form action="/canciones?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" method="post">
+          <form action="/canciones" method="post">
             <!-- Título -->
             <div class="form-group mb-4">
               <label for="tit_cancion">
@@ -64,7 +64,7 @@
             </div>
             <!-- Botones -->
             <div class="d-flex justify-content-between mt-5">
-              <a href="/canciones" class="btn btn-volver">
+              <a href="/canciones?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-volver">
                 ← Volver
               </a>
               <button class="btn btn-success" type="submit">

@@ -27,10 +27,10 @@
           <!-- Botones crud -->
           <% if(user) { %>
             <div class="d-flex flex-wrap gap-2 mt-3">
-              <a href="/editCantante/<%= interprete._id %>" class="btn btn-success">
+              <a href="/editCantante/<%= interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-success">
                 Editar intérprete
               </a>
-              <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE" method="post">
+              <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE&<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <button class="btn btn-danger delete" type="submit">
                   Eliminar intérprete
@@ -57,13 +57,13 @@
         <div class="col-md-6 col-lg-4">
           <div class="card shadow-sm border-0 h-100 hover-card">
             <!-- Carátula -->
-            <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>">
+            <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>">
               <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="card-img-top p-3" style="height: 320px; object-fit: contain; background-color: #111;" onerror="this.onerror=null; this.src='/img/no-cover.jpg'">
             </a>
             <!-- Info -->
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">
-                <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="text-decoration-none text-light">
+                <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" class="text-decoration-none text-light">
                   <%= disco.titulo %>
                 </a>
               </h5>
@@ -71,7 +71,7 @@
                 📅 <%= disco.anyo %>
               </p>
               <div class="mt-auto">
-                <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-outline-primary btn-sm">
+                <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" class="btn btn-outline-primary btn-sm">
                   Ver disco
                 </a>
               </div>
@@ -81,68 +81,20 @@
       <% }) %>
     </div>
     <!-- Paginación discos -->
-    <% if (paginasDiscos > 1) { %>
-      <nav class="text-center mt-4">
-        <ul class="pagination justify-content-center">
-          <!-- Anterior -->
-          <% if (paginaDiscos > 1) { %>
-            <li class="page-item">
-              <a href="/verCantante/<%= interprete._id %>?paginaDiscos=<%= paginaDiscos - 1 %>">
-                Anterior
-              </a>
-            </li>
-          <% } else { %>
-            <li>
-              <button class="btn btn-sm btn-secondary me-2" disabled>
-                Anterior
-              </button>
-            </li>
-          <% } %>
-          <%
-            const paginaActual = Number(paginaDiscos);
-            let inicio = paginaActual - 4;
-            let fin = paginaActual + 4;
-            if(inicio < 1) {
-              inicio = 1;
-              fin = Math.min(9, paginasDiscos);
-            }
-            if(fin > paginasDiscos) {
-              fin = paginasDiscos;
-              inicio = Math.max(1, paginasDiscos - 8);
-            }
-          %>
-          <!-- números -->
-          <% for(let i=inicio; i<=fin; i++) { %>
-            <li class="page-item <%= i === paginaActual ? 'active' : '' %>">
-              <a href="/verCantante/<%= interprete._id %>?paginaDiscos=<%= i %>" class="page-link">
-                <%= i %>
-              </a>
-            </li>
-          <% } %>
-          <!-- siguiente -->
-          <% if (paginaDiscos < paginasDiscos) { %>
-            <li class="page-item">
-              <a href="/verCantante/<%= interprete._id %>?paginaDiscos=<%= paginaDiscos + 1 %>">
-                Siguiente
-              </a>
-            </li>
-          <% } else { %>
-            <li>
-              <button class="btn btn-sm btn-secondary ms-2" disabled>
-                Siguiente
-              </button>
-            </li>
-          <% } %>
-        </ul>
-      </nav>
-    <% } %>
+    <%- include('partials/_paginacion', {
+      pagina: paginaDiscos,
+      paginas: paginasDiscos,
+      rutaBase: `/verCantante/${interprete._id}`,
+      letra,
+      queryPagina: 'paginaDiscos'
+    }) %>
   </div>
   <!-- Volver -->
   <div class="text-center mb-5">
-    <a href="/cantantes?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-volver">
+    <a href="/cantantes?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-volver">
       Volver a intérprete
     </a>
-    <a href="/discos?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-volver">
+    <a href="/discos?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-volver">
       Volver a discos
     </a>
   </div>

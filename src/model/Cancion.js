@@ -22,15 +22,10 @@ const CancionSchema = new Schema({
     ref: "Disco",
     index: true,
   },
-  del_interprete: {
-    type: Schema.Types.ObjectId,
-    ref: "Interprete",
-    index: true,
-  },
   artista_pista: {
     type: String,
     index: true,
-  },
+  }
 });
 
 module.exports = mongoose.model("Cancion", CancionSchema);
