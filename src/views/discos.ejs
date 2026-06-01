@@ -5,7 +5,8 @@
   <%- include('partials/_barraAZ', {
     letrasExistentes,
     letra,
-    rutaBase: '/discos'
+    rutaBase: '/discos',
+    queryPagina: 'paginaCantantes'
   }) %>
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold">
@@ -13,7 +14,7 @@
     </h1>
     <div class="d-flex align-items-center gap-3">
       <% if(user) { %>
-        <a href="/discos/nuevo?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-primary">
+        <a href="/discos/nuevo?<%= query %>" class="btn btn-primary">
           + Añadir disco
         </a>
       <% } %>
@@ -28,7 +29,7 @@
       <div class="mb-4 mt-5">
         <h2 class="text-warning fw-bold">
           🎤 
-          <a href="/verCantante/<%= grupo.interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="text-decoration-none text-warning">
+          <a href="/verCantante/<%= grupo.interprete._id %>?<%= query %>" class="text-decoration-none text-warning">
             <%= grupo.interprete.nombre %>
           </a>
         </h2>
@@ -39,11 +40,11 @@
           <div class="col-6 col-md-3 col-lg-2">
             <div class="card-musica">
               <div class="text-center">
-                <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>">
+                <a href="/verDisco/<%= disco._id %>?<%= query %>">
                   <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="img-fluid rounded shadow-sm mb-2" style="height: 260px; object-fit: contain; background-color: #111;" onerror="this.onerror=null; this.src='/img/no-cover.jpg'">
                 </a>
                 <h6 class="text-light">
-                  <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="text-decoration-none text-light">
+                  <a href="/verDisco/<%= disco._id %>?<%= query %>" class="text-decoration-none text-light">
                     <%= disco.titulo %>
                   </a>
                 </h6>

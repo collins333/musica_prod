@@ -5,7 +5,8 @@
   <%- include('partials/_barraAZ', {
     letrasExistentes,
     letra,
-    rutaBase: '/canciones'
+    rutaBase: '/canciones',
+    queryPagina: 'paginaCantantes'
   }) %>
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold">
@@ -13,7 +14,7 @@
     </h1>
     <div class="d-flex align-items-center gap-3">
       <% if(user) { %>
-        <a href="/canciones/nueva?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-primary">
+        <a href="/canciones/nueva?<%= query %>" class="btn btn-primary">
           + Añadir canción
         </a>
       <% } %>
@@ -26,7 +27,8 @@
     <%- include('partials/_grupoCanciones', {
        grupo,
        letra,
-       paginaCantantes
+       paginaCantantes,
+       query
     }) %>
   <% }) %>
   <!-- Paginación -->

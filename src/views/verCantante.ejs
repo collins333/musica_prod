@@ -27,12 +27,12 @@
           <!-- Botones crud -->
           <% if(user) { %>
             <div class="d-flex flex-wrap gap-2 mt-3">
-              <a href="/editCantante/<%= interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-success">
+              <a href="/editCantante/<%= interprete._id %>?<%= query %>" class="btn btn-success">
                 Editar intérprete
               </a>
-              <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE&<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" method="post">
+              <form action="/deleteCantante/<%= interprete._id %>?_method=DELETE&<%= query %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
-                <button class="btn btn-danger delete" type="submit">
+                <button class="btn btn-danger delete" data-mensaje="¿Seguro que quieres eliminar este intérprete?" type="submit">
                   Eliminar intérprete
                 </button>
               </form>
@@ -57,13 +57,13 @@
         <div class="col-md-6 col-lg-4">
           <div class="card shadow-sm border-0 h-100 hover-card">
             <!-- Carátula -->
-            <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>">
+            <a href="/verDisco/<%= disco._id %>?<%= query %>">
               <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="card-img-top p-3" style="height: 320px; object-fit: contain; background-color: #111;" onerror="this.onerror=null; this.src='/img/no-cover.jpg'">
             </a>
             <!-- Info -->
             <div class="card-body d-flex flex-column">
               <h5 class="card-title">
-                <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" class="text-decoration-none text-light">
+                <a href="/verDisco/<%= disco._id %>?<%= query %>" class="text-decoration-none text-light">
                   <%= disco.titulo %>
                 </a>
               </h5>
@@ -71,7 +71,7 @@
                 📅 <%= disco.anyo %>
               </p>
               <div class="mt-auto">
-                <a href="/verDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" class="btn btn-outline-primary btn-sm">
+                <a href="/verDisco/<%= disco._id %>?<%= query %>" class="btn btn-outline-primary btn-sm">
                   Ver disco
                 </a>
               </div>
@@ -91,24 +91,13 @@
   </div>
   <!-- Volver -->
   <div class="text-center mb-5">
-    <a href="/cantantes?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-volver">
+    <a href="/cantantes?<%= query %>" class="btn btn-volver">
       Volver a intérprete
     </a>
-    <a href="/discos?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-volver">
+    <a href="/discos?<%= query %>" class="btn btn-volver">
       Volver a discos
     </a>
   </div>
 </div>
-<script>
-  let botones = document.querySelectorAll('.delete');
-  for (const boton of botones) {  
-    boton.addEventListener('click', (e) => {
-      let respuesta = confirm('¿Estás seguro de querer eliminar este cantante?');
-      if(!respuesta) {
-        e.preventDefault();
-      }
-    });
-  }
-</script>
 
 <% include partials/_footer %>

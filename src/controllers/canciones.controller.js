@@ -5,87 +5,72 @@ const Cancion = require("../model/Cancion");
 const Disco = require("../model/Disco");
 const Interprete = require("../model/Interprete");
 
+const obtenerLetrasExistentes = require("../helpers/letras");
+const construirQuery = require("../helpers/contexto");
+const obtenerContexto = require('../helpers/obtenerContexto');
+
 // LISTAR CANCIONES
 exports.listarCanciones = async (req, res) => {
   try {
+    const contexto = obtenerContexto(req);
+
     const porPagina = 2;
-    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
-    const letra = req.query.letra;
-
+    
     let filtro = {};
-
-    if (letra) {
+    
+    if (contexto.letra) {
       filtro.nombre = {
-        $regex: "^" + letra,
+        $regex: "^" + contexto.letra,
         $options: "i",
       };
     }
-
+    
     // intérpretes paginados
     const interpretes = await Interprete.find(filtro)
-      .sort({ nombre: 1 })
-      .skip((paginaCantantes - 1) * porPagina)
-      .limit(porPagina)
-      .lean();
-
+    .sort({ nombre: 1 })
+    .skip((contexto.paginaCantantes - 1) * porPagina)
+    .limit(porPagina)
+    .lean();
+    
     // construir estructura
     const interpretesConDiscos = await Promise.all(
       interpretes.map(async (interprete) => {
         const discos = await Disco.find({ interprete: interprete._id })
-          .sort({ anyo: 1, titulo: 1 })
-          .lean();
-
+        .sort({ anyo: 1, titulo: 1 })
+        .lean();
+        
         const discosConCanciones = await Promise.all(
           discos.map(async (disco) => {
             const canciones = await Cancion.find({ del_disco: disco._id })
-              .sort({ num_cancion: 1 })
-              .lean();
-
+            .sort({ num_cancion: 1 })
+            .lean();
+            
             return {
               disco,
               canciones,
             };
           }),
         );
-
+        
         return {
           interprete,
           discos: discosConCanciones,
         };
       }),
     );
-
+    
     // total intérpretes
     const totalInterpretes = await Interprete.countDocuments(filtro);
-
+    
     // letras existentes
-    const letrasExistentes = await Interprete.aggregate([
-      {
-        $project: {
-          primeraLetra: {
-            $toUpper: {
-              $substr: ["$nombre", 0, 1],
-            },
-          },
-        },
-      },
-      {
-        $group: {
-          _id: "$primeraLetra",
-        },
-      },
-      {
-        $sort: { _id: 1 },
-      },
-    ]);
+    const letrasExistentes = await obtenerLetrasExistentes();
 
     res.render("canciones", {
       title: "índice de canciones",
       interpretesConDiscos,
-      paginaCantantes,
       paginas: Math.ceil(totalInterpretes / porPagina),
-      letra: letra || null,
-      letrasExistentes: letrasExistentes.map((l) => l._id),
+      letrasExistentes,
+      ...contexto
     });
   } catch (error) {
     console.error("Error:", error);
@@ -98,13 +83,7 @@ exports.verCancion = async (req, res) => {
     const id = req.params.id;
 
     // contexto navegación
-    const letra = req.query.letra || null;
-
-    
-    // paginaciones internas
-    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
-    const paginaDiscos = parseInt(req.query.paginaDiscos) || 1;
-    const paginaCanciones = parseInt(req.query.paginaCanciones) || 1;
+    const contexto = obtenerContexto(req);
 
     const cancion = await Cancion.findById(id)
       .populate({
@@ -119,12 +98,8 @@ exports.verCancion = async (req, res) => {
     res.render("verCancion", {
       title: "información de la canción",
       cancion,
-      letra,
-      paginaCantantes,
-      paginaDiscos,
-      paginaCanciones
+      ...contexto,
     });
-
   } catch (error) {
     console.error("Error:", error);
   }
@@ -133,9 +108,8 @@ exports.verCancion = async (req, res) => {
 // IR A FORMULARIO CANCION NUEVA
 exports.formNuevaCancion = async (req, res) => {
   try {
-    const letra = req.query.letra || null;
-    const paginaCantantes = parseInt(req.query.paginaCantantes) || 1;
-
+    const contexto = obtenerContexto(req);
+    
     const discos = await Disco.find()
       .populate("interprete")
       .sort({ titulo: 1 })
@@ -144,10 +118,8 @@ exports.formNuevaCancion = async (req, res) => {
     res.render("nuevaCancion", {
       title: "Añadir canción",
       discos,
-      letra,
-      paginaCantantes,
+      ...contexto
     });
-
   } catch (err) {
     console.error("Error:", err);
   }
@@ -173,25 +145,17 @@ exports.crearCancion = async (req, res) => {
 
     const letra = interprete.nombre[0].toUpperCase();
 
+    const obtenerPaginaInterprete = require("../helpers/paginacion");
+
     const porPagina = 2;
 
-    // intérpretes de esa letra
-    const interpretesLetra = await Interprete.find({
-      nombre: {
-        $regex: "^" + letra,
-        $options: "i",
-      },
-    })
-      .sort({ nombre: 1 })
-      .lean();
-
-    const posicion = interpretesLetra.findIndex(
-      (i) => i._id.toString() === interprete._id.toString(),
+    const pagina = await obtenerPaginaInterprete(
+      interprete._id,
+      letra,
+      porPagina,
     );
 
-    const pagina = Math.ceil((posicion + 1) / porPagina);
-
-    res.redirect(`/canciones?letra=${letra}&pagina=${pagina}`);
+    res.redirect(`/canciones?letra=${letra}&paginaCantantes=${pagina}`);
   } catch (err) {
     console.error("Error:", err);
   }
@@ -202,9 +166,8 @@ exports.formEditarCancion = async (req, res) => {
   try {
     const id = req.params.id;
 
-    const letra = req.query.letra || null;
-    const pagina = parseInt(req.query.pagina) || 1;
-
+    const contexto = obtenerContexto(req);
+    
     const cancion = await Cancion.findById(id).lean();
 
     const discos = await Disco.find()
@@ -216,8 +179,7 @@ exports.formEditarCancion = async (req, res) => {
       title: "Editar canción",
       cancion,
       discos,
-      letra,
-      pagina,
+      ...contexto,
     });
   } catch (err) {
     console.error("Error:", err);
@@ -261,25 +223,18 @@ exports.editarCancion = async (req, res) => {
     const interprete = await Interprete.findById(nuevoDisco.interprete);
 
     const letra = interprete.nombre[0].toUpperCase();
+
+    const obtenerPaginaInterprete = require("../helpers/paginacion");
+
     const porPagina = 2;
 
-    // intérpretes de esa letra
-    const interpretesLetra = await Interprete.find({
-      nombre: {
-        $regex: "^" + letra,
-        $options: "i",
-      },
-    })
-      .sort({ nombre: 1 })
-      .lean();
-
-    const posicion = interpretesLetra.findIndex(
-      (i) => i._id.toString() === interprete._id.toString(),
+    const pagina = await obtenerPaginaInterprete(
+      interprete._id,
+      letra,
+      porPagina,
     );
 
-    const pagina = Math.ceil((posicion + 1) / porPagina);
-
-    res.redirect(`/canciones?letra=${letra}&paginaCantantes=${paginaCantantes}`);
+    res.redirect(`/canciones?letra=${letra}&paginaCantantes=${pagina}`);
   } catch (err) {
     console.error("Error:", err);
   }
@@ -307,8 +262,9 @@ exports.eliminarCancion = async (req, res) => {
     // borrar y eliminar canción
     await Cancion.findByIdAndDelete(id);
 
-    res.redirect(`/verDisco/${cancion.del_disco}?letra=${letra}&paginaCantantes=${paginaCantantes}&paginaDiscos=${paginaDiscos}&paginaCanciones=${paginaCanciones}`);
-    
+    res.redirect(
+      `/verDisco/${cancion.del_disco}?letra=${letra}&paginaCantantes=${paginaCantantes}&paginaDiscos=${paginaDiscos}&paginaCanciones=${paginaCanciones}`,
+    );
   } catch (err) {
     console.error("Error:", err);
   }

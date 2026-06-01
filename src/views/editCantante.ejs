@@ -9,7 +9,7 @@
         </div>
         <div class="card-body">
           <form
-            action="/editCantante/<%= interprete._id %>?_method=PUT"
+            action="/editCantante/<%= interprete._id %>?_method=PUT&<%= query %>"
             method="post"
           >
             <!-- Nombre -->
@@ -60,7 +60,7 @@
             </div>
             <!-- Botones -->
             <div class="d-flex justify-content-between mt-4">
-              <a href="/cantantes?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-volver"> ← Volver </a>
+              <a href="/cantantes?<%= query %>" class="btn btn-volver"> ← Volver </a>
               <button class="btn btn-success">Guardar intérprete</button>
             </div>
           </form>

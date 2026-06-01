@@ -15,7 +15,7 @@
             💿 <%= disco.titulo %>
           </h1>
           <h3 class="mb-3">
-            <a href="/verCantante/<%= disco.interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" class="text-decoration-none">
+            <a href="/verCantante/<%= disco.interprete._id %>?<%= query %>" class="text-decoration-none">
               <%=interprete.nombre %>
             </a>
           </h3>
@@ -30,12 +30,12 @@
           <!-- Botones crud -->
           <% if(user) { %>
             <div class="d-flex flex-wrap gap-2 mt-3">
-              <a href="/editDisco/<%= disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" class="btn btn-success">
+              <a href="/editDisco/<%= disco._id %>?<%= query %>" class="btn btn-success">
                 Editar disco
               </a>
-              <form action="/deleteDisco/<%= disco._id %>?_method=DELETE&<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" method="post">
+              <form action="/deleteDisco/<%= disco._id %>?_method=DELETE&<%= query %>" method="post">
                 <input type="hidden" name="_method" value="DELETE">
-                <button class="btn btn-danger delete" type="submit">
+                <button class="btn btn-danger delete" data-mensaje="¿Seguro que quieres eliminar este disco?" type="submit">
                   Eliminar disco
                 </button>
               </form>
@@ -59,15 +59,20 @@
                 <!-- Número -->
                 <div class="col-md-1 text-center">
                   <span class="fs-4 fw-bold text-muted">
-                    <%= ((paginaCanciones - 1) * porPagina) + index + 1 %>
+                    <%= cancion.num_cancion %>
                   </span>
                 </div>
                 <!-- Info -->
                 <div class="col-md-5">
                   <h5 class="mb-1">
-                    <a href="/verCancion/<%= cancion._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>&paginaCanciones=<%= paginaCanciones %>" class="text-decoration-none">
+                    <% if(cancion.dur_cancion === '') { %>
                       <%- include('partials/cancionItem', { cancion }) %>
-                    </a>
+                    <% } else { %>
+                      <a href="/verCancion/<%= cancion._id %>?<%= query %>" class="text-decoration-none">
+
+                        <%- include('partials/cancionItem', { cancion }) %>
+                      </a>
+                    <% } %>
                     <% if(cancion.artista_pista) { %>
                       <span class="text-muted">
                         - <em><%= cancion.artista_pista %></em>
@@ -97,12 +102,12 @@
                 <!-- Acciones -->
                 <% if(user) { %>
                   <div class="col-md-2 text-end">
-                    <a href="/editCancion/<%= cancion._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>&paginaCanciones=<%= paginaCanciones %>" class="btn btn-outline-success btn-sm mb-2">
+                    <a href="/editCancion/<%= cancion._id %>?<%= query %>" class="btn btn-outline-success btn-sm mb-2">
                       Editar
                     </a>
-                    <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE&<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>&paginaCanciones=<%= paginaCanciones %>" method="post">
+                    <form action="/deleteCancion/<%= cancion._id %>?_method=DELETE&<%= query %>" method="post">
                       <input type="hidden" name="_method" value="DELETE">
-                      <button class="btn btn-outline-danger btn-sm delete" type="submit">
+                      <button class="btn btn-outline-danger btn-sm delete" data-mensaje="¿Seguro que quieres eliminar esta canción?" type="submit">
                         Eliminar
                       </button>
                     </form>
@@ -125,24 +130,13 @@
   </div>
   <!-- Volver -->
   <div class="text-center mb-5">
-    <a href="/discos?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="btn btn-volver">
+    <a href="/discos?<%= query %>" class="btn btn-volver">
       Volver a discos
     </a>
-    <a href="/verCantante/<%= disco.interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>&paginaDiscos=<%= paginaDiscos %>" class="btn btn-volver">
+    <a href="/verCantante/<%= disco.interprete._id %>?<%= query %>" class="btn btn-volver">
       Volver a intérprete
     </a>
   </div>
 </div>
-<script>
-  let botones = document.querySelectorAll('.delete');
-  for (const boton of botones) {  
-    boton.addEventListener('click', (e) => {
-      let respuesta = confirm('¿Estás seguro de querer eliminar esta canción?');
-      if(!respuesta) {
-        e.preventDefault();
-      }
-    });
-  }
-</script>
 
 <% include partials/_footer %>

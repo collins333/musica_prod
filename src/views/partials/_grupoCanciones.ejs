@@ -1,7 +1,7 @@
     <!-- nombre intérprete -->
     <div class="mb-4 mt-5">
       <h2 class="text-warning fw-bold">
-        🎤 <a href="/verCantante/<%= grupo.interprete._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="text-decoration-none text-warning">
+        🎤 <a href="/verCantante/<%= grupo.interprete._id %>?<%= query %>" class="text-decoration-none text-warning">
           <%= grupo.interprete.nombre %> 
         </a>
       </h2>
@@ -11,11 +11,11 @@
         <div class="row g-4">
           <!-- carátula -->
           <div class="col-md-2 text-center">
-            <a href="/verDisco/<%= item.disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>">
+            <a href="/verDisco/<%= item.disco._id %>?<%= query %>">
               <img src="<%= item.disco.caratula %>" class="img-fluid rounded shadow disco-thumb" onerror="this.onerror=null; this.src='/img/no-cover.jpg'">
             </a>
             <h5 class="text-light mt-3 fw-bold">
-              <a href="/verDisco/<%= item.disco._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="text-decoration-none text-light">
+              <a href="/verDisco/<%= item.disco._id %>?<%= query %>" class="text-decoration-none text-light">
                 <%= item.disco.titulo %>
               </a>
             </h5>
@@ -27,7 +27,7 @@
           <div class="col-md-10">
             <% item.canciones.forEach(cancion => { %>
               <div class="mb-2 border-bottom pb-1">
-                <a href="/verCancion/<%= cancion._id %>?<%= letra ? `letra=${letra}&` : '' %>paginaCantantes=<%= paginaCantantes %>" class="text-decoration-none text-light">
+                <a href="/verCancion/<%= cancion._id %>?<%= query %>" class="text-decoration-none text-light">
                   <strong>
                     <%= cancion.num_cancion %>.
                   </strong>

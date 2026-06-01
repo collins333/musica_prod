@@ -10,7 +10,7 @@
           </h3>
         </div>
         <div class="card-body">
-          <form action="/editDisco/<%= disco._id %>?_method=PUT" method="post">
+          <form action="/editDisco/<%= disco._id %>?_method=PUT&<%= query %>" method="post">
             <!-- Título -->
             <div class="form-group mb-3">
               <label for="titulo">
@@ -66,7 +66,7 @@
             </div>
             <!-- Botones -->
             <div class="d-flex justify-content-between mt-4">
-              <a href="/discos?<%= letra ? `letra=${letra}&` : '' %>pagina=<%= pagina %>" class="btn btn-volver">
+              <a href="/discos?<%= query %>" class="btn btn-volver">
                 ← Volver
               </a>
               <button class="btn btn-success">

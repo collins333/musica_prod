@@ -8,7 +8,7 @@
        const existe = letrasExistentes.includes(l);
       %>
       <% if(existe) { %>
-        <a href="<%= rutaBase %>?letra=<%= l %>&pagina=1" class="btn btn-sm <%= letra && letra.toUpperCase() === l ? `btn-warning` : `btn-outline-light`%> m-1">
+        <a href="<%= rutaBase %>?letra=<%= l %>&<%= queryPagina %>=1" class="btn btn-sm <%= letra && letra.toUpperCase() === l ? `btn-warning` : `btn-outline-light`%> m-1">
           <%= l %>
         </a>
       <% } else { %>
