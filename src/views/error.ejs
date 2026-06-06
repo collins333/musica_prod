@@ -1,11 +1,22 @@
 <%- include('partials/_header') %>
 
 <div class="container text-center mt-5">
-  <div class="card">
-    <h1>⚠ Error</h1>
-    <p><%= mensaje %></p>
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow border-0 p-4 bg dark text-light">
+        <span class="display-3 text-danger d-block mb-3">⚠️</span>
+        <h1 class="fw-bold mb-4 text-warning">
+          <%= typeof title !== 'undefined' ? title : 'Error' %>
+        </h1>
+        <p class="fs-5 mb-4 text-light">
+          <%= mensaje %>
+        </p>
+        <a href="/" class="btn btn-primary mt-2">
+          Volver al inicio
+        </a>
+      </div>
+    </div>
   </div>
-  <a href="/" class="btn btn-primary mt-3"> Volver al inicio </a>
 </div>
 
 <%- include('partials/_footer') %>
