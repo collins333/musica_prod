@@ -1,8 +1,8 @@
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-md-10 col-lg-8">
       <div class="card shadow border-0 mt-4">
         <div class="card-header cabecera">
           <h3 class="mb-0">
@@ -13,35 +13,35 @@
           <form action="/discos" method="post">
             <!-- Título -->
             <div class="form-group mb-3">
-              <label for="">
+              <label for="titulo" class="form-label">
                   <strong>Título</strong>
               </label>
               <input type="text" name="titulo" class="form-control">
             </div>
             <!-- Año -->
             <div class="form-group mb-3">
-              <label for="">
+              <label for="anyo" class="form-label">
                   <strong>Año</strong>
               </label>
               <input type="text" name="anyo" class="form-control">
             </div>
             <!-- Carátula -->
             <div class="form-group mb-3">
-              <label for="">
+              <label for="caratula" class="form-label">
                 <strong>Carátula (URL)</strong>
               </label>
               <input type="text" name="caratula" class="form-control">
             </div>
             <!-- Info -->
             <div class="form-group mb-3">
-              <label for="">
+              <label for="info" class="form-label">
                 <strong>Información</strong>
               </label>
               <textarea name="info" class="form-control"></textarea>
             </div>
             <!-- Intérprete -->
               <div class="form-group mb-3">
-                <label for="">
+                <label for="interprete" class="form-label">
                   <strong>Intérprete</strong>
                 </label>
                 <select name="interprete" class="form-control" required>
@@ -80,4 +80,4 @@
   </div> 
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

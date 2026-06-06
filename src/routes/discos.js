@@ -23,7 +23,6 @@ router.get("/discos/nuevo", isAuth, discosController.formNuevoDisco);
 router.post("/discos", isAuth, discosController.crearDisco);
 
 // Listado discos
-//router.get('/discos/:pagina', discosController.listarDiscos);
 router.get("/discos", discosController.listarDiscos);
 
 // Ver disco

@@ -1,9 +1,26 @@
-<% include partials/_header %>
-<div class="container">
-  <div class="row">
-    <div class="col-md-7 centrar">
-      <h2>No se han encontrado resultados</h2>
+<%- include('partials/_header') %>
+
+<div class="container py-5 text-center">
+  <div class="row justify-content-center">
+    <div class="card">
+      <div class="col-md-7">
+        <span class="display-1 text-muted mb-4 d-block">🎵</span>
+        <h2 class="mb-4 text-warning fw-bold">
+          No se han encontrado resultados
+        </h2>
+        <p class="text-light mb-5">
+          Prueba a buscar con otros términos o explora las secciones principales.
+        </p>
+        <div class="d-flex justify-content-center gap-2 flex-wrap mb-3">
+          <a href="/cantantes" class="btn btn-primary">
+            Ir a intérpretes
+          </a>
+          <a href="/" class="btn btn-outline-light">
+            Volver al inicio 
+          </a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

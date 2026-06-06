@@ -2,12 +2,17 @@
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const normalizarTexto = require('../helpers/normalizarTexto');
 
 const DiscoSchema = new Schema({
   titulo: {
     type: String,
     required: true,
     trim: true,
+    index: true,
+  },
+  titulo_normalizado: {
+    type: String,
     index: true,
   },
   caratula: String,
@@ -32,6 +37,12 @@ const DiscoSchema = new Schema({
     type: Boolean,
     default: false,
   },
+});
+
+DiscoSchema.pre('save', function() {
+  this.titulo_normalizado = normalizarTexto(this.titulo);
+
+  //next();
 });
 
 module.exports = mongoose.model("Disco", DiscoSchema);

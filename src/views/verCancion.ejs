@@ -1,5 +1,4 @@
-
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <% const disco = cancion.del_disco || {}; %>
 <% const interprete = disco.interprete || {}; %>
@@ -80,13 +79,17 @@
     <a href="/canciones?<%= query %>" class="btn btn-volver">
       Volver a canciones
     </a>
-    <a href="/verDisco/<%= cancion.del_disco._id %>?<%= query %>" class="btn btn-volver">
-      Volver al disco
-    </a>
-    <a href="/verCantante/<%= cancion.del_disco.interprete._id %>?<%= query %>" class="btn btn-volver">
-      Volver al intérprete
-    </a>
+    <% if (disco._id) { %> 
+      <a href="/verDisco/<%= cancion.del_disco._id %>?<%= query %>" class="btn btn-volver">
+        Volver al disco
+      </a>
+    <% } %>
+    <% if (interprete._id) { %>
+      <a href="/verCantante/<%= cancion.del_disco.interprete._id %>?<%= query %>" class="btn btn-volver">
+        Volver al intérprete
+      </a>
+    <% } %>
   </div>
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

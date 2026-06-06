@@ -1,8 +1,8 @@
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-md-10 col-lg-8">
       <div class="card shadow border-0 mt-4">
         <div class="card-header cabecera">
           <h3 class="mb-0">
@@ -37,9 +37,7 @@
               <label for="info">
                 <strong>Información</strong>
               </label>
-              <textarea name="info" class="form-control">
-                <%= disco.info %>
-              </textarea>
+              <textarea name="info" id="info" class="form-control" rows="4"><%= disco.info %></textarea>
             </div>
             <!-- Intérprete -->
             <div class="form-group mb-3">
@@ -48,7 +46,7 @@
               </label>
               <select name="interprete" class="form-control" required>
                 <% interpretes.forEach(interprete => { %>
-                  <option value="<%= interprete._id %>" <%= disco.interprete.equals(interprete._id) ? 'selected' : '' %>>
+                  <option value="<%= interprete._id %>" <%= disco.interprete?.equals(interprete._id) ? 'selected' : '' %>>
                     <%= interprete.nombre %>
                   </option>
                 <% }) %>
@@ -80,4 +78,4 @@
   </div> 
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

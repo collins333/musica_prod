@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const normalizarTexto = require("../helpers/normalizarTexto");
 
 const CancionSchema = new Schema({
   num_cancion: {
@@ -15,6 +16,10 @@ const CancionSchema = new Schema({
     trim: true,
     index: true,
   },
+  tit_cancion_normalizado: {
+    type: String,
+    index: true,
+  },
   dur_cancion: String,
   enlace: String,
   del_disco: {
@@ -25,7 +30,19 @@ const CancionSchema = new Schema({
   artista_pista: {
     type: String,
     index: true,
-  }
+  },
+  artista_pista_normalizado: {
+    type: String,
+    index: true,
+  },
+});
+
+CancionSchema.pre("save", function () {
+  this.tit_cancion_normalizado = normalizarTexto(this.tit_cancion);
+
+  this.artista_pista_normalizado = normalizarTexto(this.artista_pista || "");
+
+  //next();
 });
 
 module.exports = mongoose.model("Cancion", CancionSchema);

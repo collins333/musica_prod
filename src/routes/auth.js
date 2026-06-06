@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const bcrypt = require("bcryptjs");
+const asyncHandler = require('../middlewares/asyncHandler');
 
 // mostrar login
 router.get("/login", (req, res) => {
@@ -12,33 +13,40 @@ router.get("/login", (req, res) => {
 });
 
 // procesar login
-router.post("/login", (req, res) => {
+router.post("/login", asyncHandler(async (req, res, next) => {
   const { user, password } = req.body;
-
+    
+  // validamos el nombre del usuario administrativo
   if (user === process.env.ADMIN_USER) {
-    bcrypt.compare(password, process.env.ADMIN_PASSWORD, (err, result) => {
-      if (result) {
-        req.session.user = user;
-        return res.redirect("/cantantes");
-      }
+    // comparamos la contraseña de forma asíncrona
+    const esCorrecto = await bcrypt.compare(password, process.env.ADMIN_PASSWORD);
 
-      res.render("login", {
-        error: "Usuario o contraseña incorrectos",
-        title: "Login admin",
+    if (esCorrecto) {
+      req.session.user = user;
+
+      // forzamos a que la sesión se guarde en MongoDBAtlas antes de redirigir
+      return req.session.save((err) => {
+        // si hay un error de BD, va a errorHandler
+        if (err) return next(err);
+        res.redirect('/cantantes');
       });
-    });
-  } else {
-    res.render("login", {
-      error: "Usuario o contraseña incorrectos",
-      title: "Login admin",
-    });
+    }
   }
-});
+
+  // un solo punto de salida si el usuario o la contraseña fallan
+  res.render("login", {
+    error: "Usuario o contraseña incorrectos",
+    title: "Login admin",
+  });
+}));
 
 // logout
 router.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.redirect("/login");
+  req.session.destroy((err) => {
+    // una vez destruída la sesión, limpiamos las cookies
+    res.clearCookie('connect.sid');
+    res.redirect("/login");
+  });
 });
 
 module.exports = router;

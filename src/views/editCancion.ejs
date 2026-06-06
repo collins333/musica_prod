@@ -1,8 +1,8 @@
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-md-10 col-lg-8">
       <div class="card shadow border-0 mt-4">
         <div class="card-header cabecera">
           <h3 class="mb-0">
@@ -53,7 +53,7 @@
               </label>
               <select name="del_disco" id="del_disco" class="form-control" required>
                 <% discos.forEach(disco => { %>
-                  <option value="<%= disco._id %>" <%= cancion.del_disco.equals(disco._id) ? 'selected' : '' %>>
+                  <option value="<%= disco._id %>" <%= cancion.del_disco?.equals(disco._id) ? 'selected' : '' %>>
                     <%= disco.titulo %> — <%= disco.interprete.nombre %>
                   </option>
                 <% }) %>
@@ -75,4 +75,4 @@
   </div>
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

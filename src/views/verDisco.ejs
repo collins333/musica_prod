@@ -1,4 +1,4 @@
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <div class="container">
   <!-- Cabecera disco -->
@@ -122,7 +122,7 @@
     <!-- Paginación canciones -->
     <%- include('partials/_paginacion', {
       pagina: paginaCanciones,
-      paginas: paginasCanciones,
+      paginas: totalPaginasCanciones,
       rutaBase: `/verDisco/${disco._id}`,
       letra,
       queryPagina: 'paginaCanciones'
@@ -133,10 +133,12 @@
     <a href="/discos?<%= query %>" class="btn btn-volver">
       Volver a discos
     </a>
-    <a href="/verCantante/<%= disco.interprete._id %>?<%= query %>" class="btn btn-volver">
-      Volver a intérprete
-    </a>
+    <% if (interprete && interprete._id) { %>
+      <a href="/verCantante/<%= disco.interprete._id %>?<%= query %>" class="btn btn-volver">
+        Volver a intérprete
+      </a>
+    <% } %>
   </div>
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

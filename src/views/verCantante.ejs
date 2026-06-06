@@ -1,4 +1,4 @@
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <div class="container">
   <!-- Cabecera intérprete -->
@@ -83,7 +83,7 @@
     <!-- Paginación discos -->
     <%- include('partials/_paginacion', {
       pagina: paginaDiscos,
-      paginas: paginasDiscos,
+      paginas: totalPaginasDiscos,
       rutaBase: `/verCantante/${interprete._id}`,
       letra,
       queryPagina: 'paginaDiscos'
@@ -100,4 +100,4 @@
   </div>
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

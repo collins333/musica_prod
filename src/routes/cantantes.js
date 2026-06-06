@@ -34,7 +34,6 @@ router.post("/cantantes", isAuth, cantantesController.crearInterprete);
 router.get("/", cantantesController.home);
 
 // Listado cantantes
-// router.get('/cantantes/:pagina', cantantesController.listarCantantes);
 router.get("/cantantes", cantantesController.listarCantantes);
 
 // Ver cantante

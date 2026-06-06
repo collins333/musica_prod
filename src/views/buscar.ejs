@@ -1,4 +1,4 @@
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <div class="container py-4">
   <!-- Título -->
@@ -20,7 +20,7 @@
     </h2>
     <div class="row g-4 mb-5">
       <% interpretes.forEach(interprete => { %>
-        <div class="col-md-4">
+        <div class="col-6 col-md-4">
           <div class="card bg-dark text-light h-100 shadow hover-card border-secondary">
             <a href="/verCantante/<%= interprete._id %>">
               <img src="<%= interprete.caratula %>" class="card-img-top" alt="<%= interprete.nombre %>" style="height: 300px; object-fit: contain; background-color: #111;">
@@ -44,7 +44,7 @@
     </h2>
     <div class="row g-4 mb-5">
       <% discos.forEach(disco => { %>
-        <div class="col-md-3">
+        <div class="col-6 col-md-3">
           <div class="card bg-dark text-light h-100 shadow hover-card border-secondary">
             <a href="/verDisco/<%= disco._id %>">
               <img src="<%= disco.caratula %>" alt="<%= disco.titulo %>" class="card-img-top"  style="height: 250px; object-fit: contain; background-color: #111;">
@@ -78,10 +78,10 @@
                 🎶 <%= cancion.tit_cancion %>
               </strong>
               <div class="text-light ms-2">
-                💿<%= cancion.del_disco.titulo %>
+                💿<%= cancion.del_disco?.titulo || 'Disco desconocido' %>
               </div>
               <div class="text-info">
-                🎤 <%= cancion.del_disco.interprete.nombre %>
+                🎤 <%= cancion.del_disco?.interprete?.nombre || 'Intérprete desconocido' %>
               </div>
               <% if(cancion.artista_pista) { %>
                 <div class="text-info small">
@@ -99,4 +99,4 @@
   <% } %>
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>

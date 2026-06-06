@@ -1,8 +1,8 @@
-<% include partials/_header %>
+<%- include('partials/_header') %>
 
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-8">
+    <div class="col-md-10 col-lg-8">
       <div class="card shadow border-0 mt-4">
         <div class="card-header cabecera">
           <h3 class="mb-0">🎤 Añadir nuevo intérprete</h3>
@@ -11,28 +11,28 @@
           <form action="/cantantes" method="post">
             <!-- Nombre -->
             <div class="form-group mb-3">
-              <label for="nombre">
+              <label for="nombre" class="form-label">
                 <strong>Nombre</strong>
               </label>
               <input type="text" name="nombre" class="form-control" />
             </div>
             <!-- Nacionalidad -->
             <div class="form-group mb-3">
-              <label for="nacionalidad">
+              <label for="nacionalidad" class="form-label">
                 <strong>Nacionalidad</strong>
               </label>
               <input type="text" name="nacionalidad" class="form-control" />
             </div>
             <!-- Carátula -->
             <div class="form-group mb-3">
-              <label for="caratula">
+              <label for="caratula" class="form-label">
                 <strong>Carátula (URL)</strong>
               </label>
               <input type="text" name="caratula" class="form-control" />
             </div>
             <!-- Info -->
             <div class="form-group mb-3">
-              <label for="info">
+              <label for="info" class="form-label">
                 <strong>Información</strong>
               </label>
               <textarea name="info" class="form-control"></textarea>
@@ -49,4 +49,4 @@
   </div>
 </div>
 
-<% include partials/_footer %>
+<%- include('partials/_footer') %>
